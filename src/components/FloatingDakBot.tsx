@@ -377,18 +377,20 @@ export function FloatingDakBot() {
 
           {/* HEADER */}
 
-          <div className="flex items-center justify-between border-b p-3">
+          <div className="flex items-center justify-between border-b p-3 bg-muted/30">
 
             <div className="flex items-center gap-2">
-              <Bot className="h-5 w-5 text-yellow-500" />
+              <div className="w-8 h-8 rounded-full bg-[#FFF0E5] dark:bg-[#F47721]/20 flex items-center justify-center">
+                <Bot className="h-4 w-4 text-[#F47721]" />
+              </div>
 
               <div>
-                <div className="font-semibold">
+                <div className="font-semibold text-sm">
                   DakBot AI
                 </div>
 
-                <div className="text-xs text-muted-foreground">
-                  Indian Stamp Assistant
+                <div className="text-[11px] text-muted-foreground">
+                  Indian Stamp & Heritage Assistant
                 </div>
               </div>
             </div>
@@ -405,7 +407,7 @@ export function FloatingDakBot() {
                       .value as Lang
                   )
                 }
-                className="rounded border bg-background px-2 py-1 text-xs"
+                className="rounded border border-border bg-background px-2 py-1 text-xs"
               >
                 <option value="en">
                   English
@@ -430,11 +432,13 @@ export function FloatingDakBot() {
                     (v) => !v
                   );
                 }}
+                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                title={voiceOn ? "Mute audio" : "Enable audio"}
               >
                 {voiceOn ? (
-                  <Volume2 className="h-5 w-5" />
+                  <Volume2 className="h-4 w-4" />
                 ) : (
-                  <VolumeX className="h-5 w-5 text-red-500" />
+                  <VolumeX className="h-4 w-4 text-red-500" />
                 )}
               </button>
 
@@ -444,8 +448,9 @@ export function FloatingDakBot() {
                 onClick={() =>
                   setOpen(false)
                 }
+                className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
           </div>
@@ -463,7 +468,7 @@ export function FloatingDakBot() {
                   className={`max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-line ${
                     msg.sender ===
                     "user"
-                      ? "ml-auto bg-yellow-500 text-black"
+                      ? "ml-auto bg-[#F47721] text-white shadow-sm"
                       : "bg-muted text-foreground"
                   }`}
                 >
@@ -474,7 +479,7 @@ export function FloatingDakBot() {
                       {msg.stamps.map((stamp) => (
                         <div
                           key={stamp.id}
-                          className="bg-black/45 border border-white/10 rounded-lg p-2.5 flex gap-3 items-center text-white"
+                          className="bg-black/60 dark:bg-black/40 border border-white/10 rounded-lg p-2.5 flex gap-3 items-center text-white"
                         >
                           {stamp.image && (
                             <img
@@ -487,7 +492,7 @@ export function FloatingDakBot() {
                             <div className="font-semibold text-xs truncate">
                               {stamp.name}
                             </div>
-                            <div className="text-[10px] text-gray-300 mt-0.5">
+                            <div className="text-[10px] text-zinc-300 mt-0.5">
                               {stamp.year} · {stamp.rarity} · ₹{stamp.price}
                             </div>
                             <div className="flex items-center justify-between mt-1">
@@ -495,7 +500,7 @@ export function FloatingDakBot() {
                                 className={`text-[9px] font-medium ${
                                   stamp.available
                                     ? "text-emerald-400"
-                                    : "text-rose-500"
+                                    : "text-rose-400"
                                 }`}
                               >
                                 {stamp.available ? "● Available" : "● Sold Out"}
@@ -503,7 +508,7 @@ export function FloatingDakBot() {
                               <Link
                                 to="/stamps/$stampId"
                                 params={{ stampId: stamp.id }}
-                                className="inline-flex items-center gap-0.5 bg-yellow-500 hover:bg-yellow-600 text-black text-[10px] font-bold px-2 py-1 rounded transition-colors"
+                                className="inline-flex items-center gap-0.5 bg-[#F47721] hover:bg-[#E85D04] text-white text-[10px] font-bold px-2 py-1 rounded transition-colors"
                               >
                                 View
                                 <ArrowRight className="w-2.5 h-2.5" />
@@ -520,7 +525,7 @@ export function FloatingDakBot() {
 
             {loading && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin text-[#F47721]" />
 
                 {
                   LANG_TEXT[lang]
@@ -532,7 +537,7 @@ export function FloatingDakBot() {
 
           {/* INPUT */}
 
-          <div className="border-t p-3">
+          <div className="border-t border-border p-3">
 
             <div className="flex gap-2">
 
@@ -543,10 +548,16 @@ export function FloatingDakBot() {
                     e.target.value
                   )
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    sendMessage(input);
+                  }
+                }}
                 placeholder={
                   LANG_TEXT[lang]
                     .placeholder
                 }
+                className="text-sm"
               />
 
               {/* MIC */}
@@ -555,12 +566,13 @@ export function FloatingDakBot() {
                 onClick={
                   handleVoiceInput
                 }
-                className="rounded-lg bg-muted px-3"
+                className="rounded-lg bg-muted px-3 hover:bg-muted/80 transition-colors"
+                title="Voice input"
               >
                 {listening ? (
                   <MicOff className="h-5 w-5 text-red-500 animate-pulse" />
                 ) : (
-                  <Mic className="h-5 w-5" />
+                  <Mic className="h-5 w-5 text-muted-foreground" />
                 )}
               </button>
 
@@ -570,7 +582,8 @@ export function FloatingDakBot() {
                 onClick={() =>
                   sendMessage(input)
                 }
-                className="rounded-lg bg-yellow-500 px-3 text-black"
+                className="rounded-lg bg-[#F47721] hover:bg-[#E85D04] px-3 text-white transition-colors shadow-sm"
+                title="Send"
               >
                 <CornerDownLeft className="h-5 w-5" />
               </button>
@@ -585,7 +598,8 @@ export function FloatingDakBot() {
         onClick={() =>
           setOpen((v) => !v)
         }
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-500 text-black shadow-xl"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F47721] hover:bg-[#E85D04] text-white shadow-xl hover:scale-105 transition-all"
+        aria-label="Open DakBot AI Chat"
       >
         {open ? (
           <X className="h-6 w-6" />

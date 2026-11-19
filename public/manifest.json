@@ -1,0 +1,26 @@
+{
+  "name": "Stamp Safar — Heritage & Philately",
+  "short_name": "Stamp Safar",
+  "description": "From Stamps to Destinations, From Heritage to Livelihood. Seva First Innovation Challenge Eastern Zone entry.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#FFF7F0",
+  "theme_color": "#F47721",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/stamp-safar-logo.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/stamp-safar-logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

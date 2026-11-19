@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "home": "Home",
+    "stamps": "Stamps",
+    "heritage": "Heritage",
+    "explore": "Explore India",
+    "handicrafts": "Handicrafts",
+    "guides": "Guides",
+    "homestays": "Homestays",
+    "marketplace": "Marketplace",
+    "sell": "Sell",
+    "dashboard": "Dashboard",
+    "about": "About & Impact Story",
+    "impact": "Impact Dashboard",
+    "onboard": "Join as Artisan / Host"
+  },
+  "hero": {
+    "badge": "SFIC East — Eastern India Heritage Platform",
+    "headlinePrefix": "From Stamps to",
+    "headlineDestinations": "Destinations",
+    "headlineFrom": "From Heritage to",
+    "headlineLivelihood": "Livelihood",
+    "subheading": "Discover the stories behind India's postage stamps, explore its cultural heritage and connect with the local communities that keep traditions alive across West Bengal, Bihar and Jharkhand.",
+    "searchPlaceholder": "Search stamps, destinations, heritage…",
+    "searchButton": "Search",
+    "quickTags": "Explore:",
+    "localCommunities": "Local Communities",
+    "communityStats": "9 guides · 6 homestays"
+  },
+  "storytelling": {
+    "badge": "Seva First Innovation Challenge — Eastern Zone",
+    "title": "Why Stamp Safar?",
+    "subtitle": "Bridging philatelic heritage with rural livelihood transformation across West Bengal, Bihar, and Jharkhand.",
+    "problemTitle": "The Problem",
+    "problemDesc": "Traditional artisans, youth tour guides, and rural homestay hosts across Eastern India struggle to reach travelers and collectors. Trapped by exploitative middlemen, they receive less than 30% of fair value, while historic philatelic treasures and rural heritage remain forgotten.",
+    "solutionTitle": "Our Solution",
+    "solutionDesc": "A unified platform connecting postage stamps -> living destinations -> rural communities. Stamp Safar enables zero-middlemen direct bookings, verified handicraft sales, and 90% direct payouts to local craftspeople and homestays.",
+    "impactTitle": "The Impact",
+    "impactDesc": "Measurable, transparent economic empowerment. Direct digital payments via UPI, revival of endangered crafts, and sustainable livelihood security for artisan cooperatives across Eastern India.",
+    "exploreStoryButton": "Read Full Impact Story →",
+    "viewImpactData": "View Live Impact Metrics"
+  },
+  "impact": {
+    "title": "Public Impact Dashboard",
+    "subtitle": "Real-time, verifiable metrics on rural livelihoods and fair-trade earnings powered by Supabase.",
+    "pilotNotice": "Pilot Launching — Live metrics update as community members join and transactions are verified.",
+    "totalLivelihood": "Community Direct Payouts",
+    "totalLivelihoodDesc": "Directly credited to artisans and hosts (90% share)",
+    "artisansOnboarded": "Artisans Onboarded",
+    "guidesRegistered": "Local Guides",
+    "homestaysPartnered": "Homestay Hosts",
+    "enquiriesGenerated": "Enquiries & Bookings",
+    "ordersProcessed": "Orders Fulfilled",
+    "stampsPreserved": "Stamps Documented",
+    "destinationsMapped": "Heritage Sites Mapped",
+    "byState": "State-Wise Community Network",
+    "lastUpdated": "Last synchronized:"
+  },
+  "common": {
+    "verified": "Verified",
+    "demo": "Demo",
+    "fairTrade": "90% goes directly to the community",
+    "enquireNow": "Enquire Now",
+    "bookStay": "Book Experience",
+    "buyStamp": "Buy Stamp",
+    "installApp": "Install App",
+    "changeLang": "Language"
+  }
+}

@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   Sun,
   User,
+  Monitor,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -16,7 +17,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { addAddress, readAddresses, type AddressItem } from "@/lib/addresses";
-import { applyTheme, readTheme, saveTheme, type ThemeMode } from "@/lib/theme";
+import {
+  applyTheme,
+  readTheme,
+  readThemePreference,
+  saveThemePreference,
+  THEME_CHANGED_EVENT,
+  type ThemePreference,
+  type ResolvedTheme,
+} from "@/lib/theme";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 export const Route = createFileRoute("/settings")({
@@ -31,7 +40,8 @@ export const Route = createFileRoute("/settings")({
 
 function SettingsPage() {
   const navigate = useNavigate();
-  const [theme, setTheme] = useState<ThemeMode>("light");
+  const [themePref, setThemePref] = useState<ThemePreference>(() => readThemePreference());
+  const [resolved, setResolved] = useState<ResolvedTheme>(() => readTheme());
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [addresses, setAddresses] = useState<AddressItem[]>([]);
   const [addressValue, setAddressValue] = useState("");
@@ -50,9 +60,15 @@ function SettingsPage() {
     .toUpperCase();
 
   useEffect(() => {
-    const savedTheme = readTheme();
-    setTheme(savedTheme);
-    applyTheme(savedTheme);
+    const handleThemeSync = () => {
+      setThemePref(readThemePreference());
+      setResolved(readTheme());
+    };
+
+    handleThemeSync();
+    window.addEventListener(THEME_CHANGED_EVENT, handleThemeSync);
+    window.addEventListener("storage", handleThemeSync);
+
     setAddresses(readAddresses());
 
     if (!supabase || !isSupabaseConfigured) return;
@@ -62,13 +78,22 @@ function SettingsPage() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => setUser(session?.user ?? null));
 
-    return () => subscription.unsubscribe();
+    return () => {
+      window.removeEventListener(THEME_CHANGED_EVENT, handleThemeSync);
+      window.removeEventListener("storage", handleThemeSync);
+      subscription.unsubscribe();
+    };
   }, []);
 
+  const changeThemePreference = (pref: ThemePreference) => {
+    setThemePref(pref);
+    const res = saveThemePreference(pref);
+    setResolved(res);
+  };
+
   const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    saveTheme(nextTheme);
+    const next: ThemePreference = resolved === "dark" ? "light" : "dark";
+    changeThemePreference(next);
   };
 
   const saveAddress = () => {
@@ -149,7 +174,7 @@ function SettingsPage() {
               >
                 <span className="flex items-center gap-3">
                   <span className="grid h-10 w-10 place-items-center rounded-full bg-card">
-                    {theme === "dark" ? (
+                    {resolved === "dark" ? (
                       <Moon className="h-5 w-5 text-gold" />
                     ) : (
                       <Sun className="h-5 w-5 text-gold" />
@@ -157,21 +182,56 @@ function SettingsPage() {
                   </span>
                   <span>
                     <span className="block font-semibold">
-                      {theme === "dark" ? "Dark mode" : "Light mode"}
+                      {resolved === "dark" ? "Dark mode" : "Light mode"}
                     </span>
                     <span className="block text-xs text-muted-foreground">
-                      Tap to switch theme
+                      {themePref === "system" ? "Following system setting" : "Manual preference"}
                     </span>
                   </span>
                 </span>
                 <span
-                  className={`flex h-7 w-12 items-center rounded-full p-1 transition ${
-                    theme === "dark" ? "justify-end bg-primary" : "justify-start bg-border"
-                  }`}
+                  className={`flex h-7 w-12 items-center rounded-full p-1 transition ${resolved === "dark" ? "justify-end bg-primary" : "justify-start bg-border"
+                    }`}
                 >
                   <span className="h-5 w-5 rounded-full bg-card shadow-sm" />
                 </span>
               </button>
+
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => changeThemePreference("light")}
+                  className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold border transition ${themePref === "light"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-foreground hover:border-gold"
+                    }`}
+                >
+                  <Sun className="w-3.5 h-3.5" />
+                  Light
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeThemePreference("dark")}
+                  className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold border transition ${themePref === "dark"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-foreground hover:border-gold"
+                    }`}
+                >
+                  <Moon className="w-3.5 h-3.5" />
+                  Dark
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeThemePreference("system")}
+                  className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold border transition ${themePref === "system"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-foreground hover:border-gold"
+                    }`}
+                >
+                  <Monitor className="w-3.5 h-3.5" />
+                  Auto
+                </button>
+              </div>
             </div>
           </aside>
 
@@ -293,9 +353,8 @@ function PreferenceToggle({
         <span className="block text-sm text-muted-foreground">{description}</span>
       </span>
       <span
-        className={`flex h-7 w-12 shrink-0 items-center rounded-full p-1 transition ${
-          checked ? "justify-end bg-primary" : "justify-start bg-border"
-        }`}
+        className={`flex h-7 w-12 shrink-0 items-center rounded-full p-1 transition ${checked ? "justify-end bg-primary" : "justify-start bg-border"
+          }`}
       >
         <span className="h-5 w-5 rounded-full bg-card shadow-sm" />
       </span>

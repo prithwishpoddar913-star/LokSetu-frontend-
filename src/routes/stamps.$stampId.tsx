@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import {
   ArrowLeft,
+  ArrowRight,
   BadgeCheck,
   Heart,
   IndianRupee,
@@ -32,6 +33,7 @@ import { StampCard } from "@/components/StampCard";
 import { getStamp, stamps, useStampAvailability } from "@/lib/stamps";
 import { addStampToCartForSignedInUser } from "@/lib/cart";
 import { readWishlist, toggleWishlistInSupabase } from "@/lib/wishlist";
+import { destinations } from "@/lib/destinations";
 
 const stampDetailSearchSchema = z.object({
   mode: fallback(z.enum(["buy", "details"]), "details").default("details"),
@@ -414,6 +416,41 @@ function StampDetail() {
                 </div>
               </div>
             )}
+
+            {/* ===== EXPLORE THIS DESTINATION (Stamp-to-Destination linking) ===== */}
+            {(() => {
+              // Find a matching destination based on stamp's state/city/name
+              const matchedDest = destinations.find((d) => {
+                const stampText = `${stamp.name} ${stamp.state} ${stamp.city} ${stamp.category}`.toLowerCase();
+                const destText = `${d.name} ${d.state} ${d.district}`.toLowerCase();
+                // Match by state and name overlap
+                if (stamp.state && d.state === stamp.state) return true;
+                if (d.name && stampText.includes(d.name.toLowerCase())) return true;
+                if (stamp.city && destText.includes(stamp.city.toLowerCase())) return true;
+                return false;
+              });
+              if (!matchedDest) return null;
+              return (
+                <div className="rounded-2xl border border-[#F47721]/30 bg-gradient-to-br from-[#FFF0E5] to-white p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <MapPin className="w-5 h-5 text-[#F47721]" />
+                    <h2 className="font-semibold text-[#252525]">Explore This Destination</h2>
+                  </div>
+                  <p className="text-sm text-[#777777] mb-4">
+                    This stamp is connected to <strong>{matchedDest.name}</strong>, {matchedDest.state}. Discover its heritage, local guides, and artisan experiences.
+                  </p>
+                  <Link
+                    to="/heritage/$destinationId"
+                    params={{ destinationId: matchedDest.id }}
+                    className="flex items-center gap-2 w-full justify-center py-3 px-4 rounded-xl bg-[#F47721] text-white font-semibold text-sm hover:bg-[#E85D04] transition-colors"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    Explore {matchedDest.name}
+                    <ArrowRight className="w-4 h-4 ml-auto" />
+                  </Link>
+                </div>
+              );
+            })()}
 
             <div className="rounded-2xl border border-border bg-card p-5">
               <h2 className="flex items-center gap-2 font-display text-xl font-semibold">

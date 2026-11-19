@@ -9,21 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as StampsRouteImport } from './routes/stamps'
+import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SellRouteImport } from './routes/sell'
+import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as RecommendationRouteImport } from './routes/recommendation'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as OnboardRouteImport } from './routes/onboard'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
+import { Route as ImpactRouteImport } from './routes/impact'
+import { Route as HomestaysRouteImport } from './routes/homestays'
+import { Route as HeritageRouteImport } from './routes/heritage'
+import { Route as HandicraftsRouteImport } from './routes/handicrafts'
+import { Route as GuidesRouteImport } from './routes/guides'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AiRouteImport } from './routes/ai'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HeritageIndexRouteImport } from './routes/heritage.index'
+import { Route as ExploreIndexRouteImport } from './routes/explore.index'
 import { Route as StampsStampIdRouteImport } from './routes/stamps.$stampId'
+import { Route as HeritageDestinationIdRouteImport } from './routes/heritage.$destinationId'
+import { Route as ExploreStateSlugRouteImport } from './routes/explore.$stateSlug'
 import { Route as StampsStampIdBuyRouteImport } from './routes/stamps.$stampId.buy'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StampsRoute = StampsRouteImport.update({
   id: '/stamps',
   path: '/stamps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -36,9 +63,24 @@ const SellRoute = SellRouteImport.update({
   path: '/sell',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RefundsRoute = RefundsRouteImport.update({
+  id: '/refunds',
+  path: '/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecommendationRoute = RecommendationRouteImport.update({
   id: '/recommendation',
   path: '/recommendation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardRoute = OnboardRouteImport.update({
+  id: '/onboard',
+  path: '/onboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketplaceRoute = MarketplaceRouteImport.update({
@@ -46,9 +88,44 @@ const MarketplaceRoute = MarketplaceRouteImport.update({
   path: '/marketplace',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImpactRoute = ImpactRouteImport.update({
+  id: '/impact',
+  path: '/impact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomestaysRoute = HomestaysRouteImport.update({
+  id: '/homestays',
+  path: '/homestays',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HeritageRoute = HeritageRouteImport.update({
+  id: '/heritage',
+  path: '/heritage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HandicraftsRoute = HandicraftsRouteImport.update({
+  id: '/handicrafts',
+  path: '/handicrafts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesRoute = GuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -61,15 +138,40 @@ const AiRoute = AiRouteImport.update({
   path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HeritageIndexRoute = HeritageIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HeritageRoute,
+} as any)
+const ExploreIndexRoute = ExploreIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ExploreRoute,
+} as any)
 const StampsStampIdRoute = StampsStampIdRouteImport.update({
   id: '/$stampId',
   path: '/$stampId',
   getParentRoute: () => StampsRoute,
+} as any)
+const HeritageDestinationIdRoute = HeritageDestinationIdRouteImport.update({
+  id: '/$destinationId',
+  path: '/$destinationId',
+  getParentRoute: () => HeritageRoute,
+} as any)
+const ExploreStateSlugRoute = ExploreStateSlugRouteImport.update({
+  id: '/$stateSlug',
+  path: '/$stateSlug',
+  getParentRoute: () => ExploreRoute,
 } as any)
 const StampsStampIdBuyRoute = StampsStampIdBuyRouteImport.update({
   id: '/buy',
@@ -79,105 +181,230 @@ const StampsStampIdBuyRoute = StampsStampIdBuyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/explore': typeof ExploreRouteWithChildren
+  '/guides': typeof GuidesRoute
+  '/handicrafts': typeof HandicraftsRoute
+  '/heritage': typeof HeritageRouteWithChildren
+  '/homestays': typeof HomestaysRoute
+  '/impact': typeof ImpactRoute
   '/marketplace': typeof MarketplaceRoute
+  '/onboard': typeof OnboardRoute
+  '/privacy': typeof PrivacyRoute
   '/recommendation': typeof RecommendationRoute
+  '/refunds': typeof RefundsRoute
   '/sell': typeof SellRoute
   '/settings': typeof SettingsRoute
+  '/shipping': typeof ShippingRoute
   '/stamps': typeof StampsRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/explore/$stateSlug': typeof ExploreStateSlugRoute
+  '/heritage/$destinationId': typeof HeritageDestinationIdRoute
   '/stamps/$stampId': typeof StampsStampIdRouteWithChildren
+  '/explore/': typeof ExploreIndexRoute
+  '/heritage/': typeof HeritageIndexRoute
   '/stamps/$stampId/buy': typeof StampsStampIdBuyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/guides': typeof GuidesRoute
+  '/handicrafts': typeof HandicraftsRoute
+  '/homestays': typeof HomestaysRoute
+  '/impact': typeof ImpactRoute
   '/marketplace': typeof MarketplaceRoute
+  '/onboard': typeof OnboardRoute
+  '/privacy': typeof PrivacyRoute
   '/recommendation': typeof RecommendationRoute
+  '/refunds': typeof RefundsRoute
   '/sell': typeof SellRoute
   '/settings': typeof SettingsRoute
+  '/shipping': typeof ShippingRoute
   '/stamps': typeof StampsRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/explore/$stateSlug': typeof ExploreStateSlugRoute
+  '/heritage/$destinationId': typeof HeritageDestinationIdRoute
   '/stamps/$stampId': typeof StampsStampIdRouteWithChildren
+  '/explore': typeof ExploreIndexRoute
+  '/heritage': typeof HeritageIndexRoute
   '/stamps/$stampId/buy': typeof StampsStampIdBuyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/explore': typeof ExploreRouteWithChildren
+  '/guides': typeof GuidesRoute
+  '/handicrafts': typeof HandicraftsRoute
+  '/heritage': typeof HeritageRouteWithChildren
+  '/homestays': typeof HomestaysRoute
+  '/impact': typeof ImpactRoute
   '/marketplace': typeof MarketplaceRoute
+  '/onboard': typeof OnboardRoute
+  '/privacy': typeof PrivacyRoute
   '/recommendation': typeof RecommendationRoute
+  '/refunds': typeof RefundsRoute
   '/sell': typeof SellRoute
   '/settings': typeof SettingsRoute
+  '/shipping': typeof ShippingRoute
   '/stamps': typeof StampsRouteWithChildren
+  '/terms': typeof TermsRoute
+  '/explore/$stateSlug': typeof ExploreStateSlugRoute
+  '/heritage/$destinationId': typeof HeritageDestinationIdRoute
   '/stamps/$stampId': typeof StampsStampIdRouteWithChildren
+  '/explore/': typeof ExploreIndexRoute
+  '/heritage/': typeof HeritageIndexRoute
   '/stamps/$stampId/buy': typeof StampsStampIdBuyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/ai'
     | '/auth'
+    | '/contact'
     | '/dashboard'
+    | '/explore'
+    | '/guides'
+    | '/handicrafts'
+    | '/heritage'
+    | '/homestays'
+    | '/impact'
     | '/marketplace'
+    | '/onboard'
+    | '/privacy'
     | '/recommendation'
+    | '/refunds'
     | '/sell'
     | '/settings'
+    | '/shipping'
     | '/stamps'
+    | '/terms'
+    | '/explore/$stateSlug'
+    | '/heritage/$destinationId'
     | '/stamps/$stampId'
+    | '/explore/'
+    | '/heritage/'
     | '/stamps/$stampId/buy'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/ai'
     | '/auth'
+    | '/contact'
     | '/dashboard'
+    | '/guides'
+    | '/handicrafts'
+    | '/homestays'
+    | '/impact'
     | '/marketplace'
+    | '/onboard'
+    | '/privacy'
     | '/recommendation'
+    | '/refunds'
     | '/sell'
     | '/settings'
+    | '/shipping'
     | '/stamps'
+    | '/terms'
+    | '/explore/$stateSlug'
+    | '/heritage/$destinationId'
     | '/stamps/$stampId'
+    | '/explore'
+    | '/heritage'
     | '/stamps/$stampId/buy'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/ai'
     | '/auth'
+    | '/contact'
     | '/dashboard'
+    | '/explore'
+    | '/guides'
+    | '/handicrafts'
+    | '/heritage'
+    | '/homestays'
+    | '/impact'
     | '/marketplace'
+    | '/onboard'
+    | '/privacy'
     | '/recommendation'
+    | '/refunds'
     | '/sell'
     | '/settings'
+    | '/shipping'
     | '/stamps'
+    | '/terms'
+    | '/explore/$stateSlug'
+    | '/heritage/$destinationId'
     | '/stamps/$stampId'
+    | '/explore/'
+    | '/heritage/'
     | '/stamps/$stampId/buy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AiRoute: typeof AiRoute
   AuthRoute: typeof AuthRoute
+  ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
+  ExploreRoute: typeof ExploreRouteWithChildren
+  GuidesRoute: typeof GuidesRoute
+  HandicraftsRoute: typeof HandicraftsRoute
+  HeritageRoute: typeof HeritageRouteWithChildren
+  HomestaysRoute: typeof HomestaysRoute
+  ImpactRoute: typeof ImpactRoute
   MarketplaceRoute: typeof MarketplaceRoute
+  OnboardRoute: typeof OnboardRoute
+  PrivacyRoute: typeof PrivacyRoute
   RecommendationRoute: typeof RecommendationRoute
+  RefundsRoute: typeof RefundsRoute
   SellRoute: typeof SellRoute
   SettingsRoute: typeof SettingsRoute
+  ShippingRoute: typeof ShippingRoute
   StampsRoute: typeof StampsRouteWithChildren
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stamps': {
       id: '/stamps'
       path: '/stamps'
       fullPath: '/stamps'
       preLoaderRoute: typeof StampsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -194,11 +421,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/refunds': {
+      id: '/refunds'
+      path: '/refunds'
+      fullPath: '/refunds'
+      preLoaderRoute: typeof RefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recommendation': {
       id: '/recommendation'
       path: '/recommendation'
       fullPath: '/recommendation'
       preLoaderRoute: typeof RecommendationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboard': {
+      id: '/onboard'
+      path: '/onboard'
+      fullPath: '/onboard'
+      preLoaderRoute: typeof OnboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketplace': {
@@ -208,11 +456,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/impact': {
+      id: '/impact'
+      path: '/impact'
+      fullPath: '/impact'
+      preLoaderRoute: typeof ImpactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/homestays': {
+      id: '/homestays'
+      path: '/homestays'
+      fullPath: '/homestays'
+      preLoaderRoute: typeof HomestaysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/heritage': {
+      id: '/heritage'
+      path: '/heritage'
+      fullPath: '/heritage'
+      preLoaderRoute: typeof HeritageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/handicrafts': {
+      id: '/handicrafts'
+      path: '/handicrafts'
+      fullPath: '/handicrafts'
+      preLoaderRoute: typeof HandicraftsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides': {
+      id: '/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof GuidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -229,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -236,12 +540,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/heritage/': {
+      id: '/heritage/'
+      path: '/'
+      fullPath: '/heritage/'
+      preLoaderRoute: typeof HeritageIndexRouteImport
+      parentRoute: typeof HeritageRoute
+    }
+    '/explore/': {
+      id: '/explore/'
+      path: '/'
+      fullPath: '/explore/'
+      preLoaderRoute: typeof ExploreIndexRouteImport
+      parentRoute: typeof ExploreRoute
+    }
     '/stamps/$stampId': {
       id: '/stamps/$stampId'
       path: '/$stampId'
       fullPath: '/stamps/$stampId'
       preLoaderRoute: typeof StampsStampIdRouteImport
       parentRoute: typeof StampsRoute
+    }
+    '/heritage/$destinationId': {
+      id: '/heritage/$destinationId'
+      path: '/$destinationId'
+      fullPath: '/heritage/$destinationId'
+      preLoaderRoute: typeof HeritageDestinationIdRouteImport
+      parentRoute: typeof HeritageRoute
+    }
+    '/explore/$stateSlug': {
+      id: '/explore/$stateSlug'
+      path: '/$stateSlug'
+      fullPath: '/explore/$stateSlug'
+      preLoaderRoute: typeof ExploreStateSlugRouteImport
+      parentRoute: typeof ExploreRoute
     }
     '/stamps/$stampId/buy': {
       id: '/stamps/$stampId/buy'
@@ -252,6 +584,33 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface ExploreRouteChildren {
+  ExploreStateSlugRoute: typeof ExploreStateSlugRoute
+  ExploreIndexRoute: typeof ExploreIndexRoute
+}
+
+const ExploreRouteChildren: ExploreRouteChildren = {
+  ExploreStateSlugRoute: ExploreStateSlugRoute,
+  ExploreIndexRoute: ExploreIndexRoute,
+}
+
+const ExploreRouteWithChildren =
+  ExploreRoute._addFileChildren(ExploreRouteChildren)
+
+interface HeritageRouteChildren {
+  HeritageDestinationIdRoute: typeof HeritageDestinationIdRoute
+  HeritageIndexRoute: typeof HeritageIndexRoute
+}
+
+const HeritageRouteChildren: HeritageRouteChildren = {
+  HeritageDestinationIdRoute: HeritageDestinationIdRoute,
+  HeritageIndexRoute: HeritageIndexRoute,
+}
+
+const HeritageRouteWithChildren = HeritageRoute._addFileChildren(
+  HeritageRouteChildren,
+)
 
 interface StampsStampIdRouteChildren {
   StampsStampIdBuyRoute: typeof StampsStampIdBuyRoute
@@ -278,14 +637,27 @@ const StampsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AiRoute: AiRoute,
   AuthRoute: AuthRoute,
+  ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
+  ExploreRoute: ExploreRouteWithChildren,
+  GuidesRoute: GuidesRoute,
+  HandicraftsRoute: HandicraftsRoute,
+  HeritageRoute: HeritageRouteWithChildren,
+  HomestaysRoute: HomestaysRoute,
+  ImpactRoute: ImpactRoute,
   MarketplaceRoute: MarketplaceRoute,
+  OnboardRoute: OnboardRoute,
+  PrivacyRoute: PrivacyRoute,
   RecommendationRoute: RecommendationRoute,
+  RefundsRoute: RefundsRoute,
   SellRoute: SellRoute,
   SettingsRoute: SettingsRoute,
+  ShippingRoute: ShippingRoute,
   StampsRoute: StampsRouteWithChildren,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

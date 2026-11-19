@@ -54,10 +54,19 @@ function RecommendationPage() {
       {/* ================= BACKGROUND VIDEO ================= */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <video
+          ref={(el) => {
+            if (el) {
+              el.muted = true;
+              el.defaultMuted = true;
+              el.play().catch(() => {});
+            }
+          }}
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
+          src="/Recommendation video bg 1.mp4"
           className="w-full h-full object-cover"
         >
           <source

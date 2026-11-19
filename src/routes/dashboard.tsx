@@ -62,7 +62,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const [checkingAuth, setCheckingAuth] = useState(isSupabaseConfigured);
   const [user, setUser] = useState<SupabaseUser | null>(null);
-  
+
   // Local state variables for buyer sections
   const [savedOrders, setSavedOrders] = useState<OrderItem[]>([]);
   const [wishlistIds, setWishlistIds] = useState<string[]>([]);
@@ -70,7 +70,7 @@ function Dashboard() {
   const [addresses, setAddresses] = useState<AddressItem[]>([]);
   const [addressValue, setAddressValue] = useState("");
   const [openTrackingId, setOpenTrackingId] = useState<string | null>(null);
-  
+
   // Cancellation / Returns states
   const [activeCancelOrderId, setActiveCancelOrderId] = useState<string | null>(null);
   const [activeReturnOrderId, setActiveReturnOrderId] = useState<string | null>(null);
@@ -80,16 +80,17 @@ function Dashboard() {
 
   // Admin Dashboard administrative states
   const [allListings, setAllListings] = useState<SellerListing[]>([]);
-  const [adminTab, setAdminTab] = useState<'overview' | 'orders' | 'submissions' | 'upi' | 'users'>('overview');
+  const [adminTab, setAdminTab] = useState<'overview' | 'orders' | 'submissions' | 'applications' | 'upi' | 'users'>('overview');
   const [activeUsers, setActiveUsers] = useState<{ email: string; name: string; role: string; lastActive: string }[]>([]);
-  
+  const [communityApps, setCommunityApps] = useState<any[]>([]);
+
   const [adminOrders, setAdminOrders] = useState<OrderItem[]>([]);
   const [ordersSearchQuery, setOrdersSearchQuery] = useState("");
-  const [adminUpiId, setAdminUpiId] = useState("8017599702@superyes");
-  const [adminQrUrl, setAdminQrUrl] = useState("/upi_qr.jpg");
+  const [adminUpiId, setAdminUpiId] = useState("7980797454@slc");
+  const [adminQrUrl, setAdminQrUrl] = useState("/upi-qr.png");
   const [savingUpiSettings, setSavingUpiSettings] = useState(false);
   const [upiNotice, setUpiNotice] = useState("");
-  
+
   const [adminAnalytics, setAdminAnalytics] = useState({
     totalUsers: 0,
     totalOrders: 0,
@@ -100,7 +101,7 @@ function Dashboard() {
     paymentStats: { Paid: 0, Pending: 0, Failed: 0, Cancelled: 0 }
   });
 
-  const isOwner = user?.email === 'prithwishpoddar913@gmail.com';
+  const isOwner = user?.email === 'mailtoprithwishpoddar@gmail.com' || user?.email === 'prithwishpoddar913@gmail.com';
   const wishlist = stamps.filter((stamp) => wishlistIds.includes(stamp.id));
   const collection = stamps.slice(0, 4);
 
@@ -184,7 +185,7 @@ function Dashboard() {
           syncSellerListingsWithSupabase(),
           syncAddressesWithSupabase()
         ]);
-        
+
         setWishlistIds(syncedWishlist);
         setSavedOrders(syncedOrders);
         setSellerListings(syncedListings);
@@ -199,7 +200,7 @@ function Dashboard() {
 
   // Load Owner Admin Dashboard configurations & analytics
   useEffect(() => {
-    if (!user || user.email !== "prithwishpoddar913@gmail.com") return;
+    if (!user || (user.email !== "mailtoprithwishpoddar@gmail.com" && user.email !== "prithwishpoddar913@gmail.com")) return;
 
     const getHeaders = async () => {
       const headers: Record<string, string> = { "Content-Type": "application/json" };
@@ -229,13 +230,61 @@ function Dashboard() {
           setAdminQrUrl(settings.qr_code_url);
         }
 
-        // 4. Fetch dynamic analytics with authorization header
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://stamp-safar-backend.onrender.com";
-        const headers = await getHeaders();
-        const aRes = await fetch(`${backendUrl}/admin/analytics`, { headers });
-        const aData = await aRes.json();
-        if (aRes.ok && aData.success) {
-          setAdminAnalytics(aData.analytics);
+        // 4. Fetch dynamic analytics from Supabase view or calculate from orders
+        let analyticsLoaded = false;
+        if (supabase && isSupabaseConfigured) {
+          try {
+            const { data: todayData } = await supabase.from("v_today_summary").select("*").maybeSingle();
+            if (todayData) {
+              setAdminAnalytics({
+                totalUsers: uniqueUsersMap.size,
+                totalOrders: Number(todayData.today_orders_count || allOrders.length),
+                totalRevenue: Number(todayData.today_revenue || allOrders.reduce((sum, o) => sum + (o.amount || 0), 0)),
+                pendingOrders: Number(todayData.upi_qr_pending_verification || allOrders.filter(o => o.status === "Pending" || o.paymentStatus === "pending_verification").length),
+                shippedOrders: allOrders.filter(o => o.trackingStep === "Shipped").length,
+                deliveredOrders: allOrders.filter(o => o.trackingStep === "Delivered").length,
+                paymentStats: {
+                  Paid: allOrders.filter(o => o.status === "Paid" || o.status === "confirmed").length,
+                  Pending: allOrders.filter(o => o.paymentStatus === "pending_verification" || o.status === "Pending").length,
+                  Failed: allOrders.filter(o => o.status === "Failed" || o.status === "Cancelled").length,
+                  Cancelled: allOrders.filter(o => o.status === "Cancelled").length,
+                },
+              });
+              analyticsLoaded = true;
+            }
+          } catch (vErr) {
+            console.warn("Supabase view read error, computing locally:", vErr);
+          }
+        }
+
+        if (!analyticsLoaded) {
+          try {
+            const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://stamp-safar-backend.onrender.com";
+            const headers = await getHeaders();
+            const aRes = await fetch(`${backendUrl}/admin/analytics`, { headers });
+            const aData = await aRes.json();
+            if (aRes.ok && aData.success) {
+              setAdminAnalytics(aData.analytics);
+              analyticsLoaded = true;
+            }
+          } catch { }
+        }
+
+        if (!analyticsLoaded) {
+          setAdminAnalytics({
+            totalUsers: Math.max(1, uniqueUsersMap.size),
+            totalOrders: allOrders.length,
+            totalRevenue: allOrders.reduce((sum, o) => sum + (o.amount || 0), 0),
+            pendingOrders: allOrders.filter(o => o.status === "Pending" || o.paymentStatus === "pending_verification").length,
+            shippedOrders: allOrders.filter(o => o.trackingStep === "Shipped").length,
+            deliveredOrders: allOrders.filter(o => o.trackingStep === "Delivered").length,
+            paymentStats: {
+              Paid: allOrders.filter(o => o.status === "Paid" || o.status === "confirmed").length,
+              Pending: allOrders.filter(o => o.paymentStatus === "pending_verification" || o.status === "Pending").length,
+              Failed: allOrders.filter(o => o.status === "Failed" || o.status === "Cancelled").length,
+              Cancelled: allOrders.filter(o => o.status === "Cancelled").length,
+            },
+          });
         }
 
         // 5. Generate active user list merging registered users from backend with inferred mock users
@@ -247,13 +296,13 @@ function Dashboard() {
             uniqueUsersMap.set(u.email, {
               email: u.email,
               name: u.name || u.email.split("@")[0],
-              role: u.role || (u.email === "prithwishpoddar913@gmail.com" ? "Owner / Administrator" : "Collector (Buyer)"),
+              role: u.role || ((u.email === "mailtoprithwishpoddar@gmail.com" || u.email === "prithwishpoddar913@gmail.com") ? "Owner / Administrator" : "Collector (Buyer)"),
               lastActive: u.last_sign_in_at
                 ? new Date(u.last_sign_in_at).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })
                 : "Registered",
             });
           });
@@ -262,9 +311,10 @@ function Dashboard() {
         }
 
         // Ensure Owner/Admin is always present with correct display
-        if (!uniqueUsersMap.has("prithwishpoddar913@gmail.com")) {
-          uniqueUsersMap.set("prithwishpoddar913@gmail.com", {
-            email: "prithwishpoddar913@gmail.com",
+        const primaryAdminEmail = user?.email || "mailtoprithwishpoddar@gmail.com";
+        if (!uniqueUsersMap.has(primaryAdminEmail)) {
+          uniqueUsersMap.set(primaryAdminEmail, {
+            email: primaryAdminEmail,
             name: "Prithwish Poddar",
             role: "Owner / Administrator",
             lastActive: "Active Now",
@@ -300,6 +350,86 @@ function Dashboard() {
         });
 
         setActiveUsers(Array.from(uniqueUsersMap.values()));
+
+        // Load community onboarding applications (artisans, guides, hosts)
+        try {
+          const [artisansRes, guidesRes, hostsRes] = await Promise.all([
+            supabase.from("artisans").select("*").order("created_at", { ascending: false }),
+            supabase.from("guides").select("*").order("created_at", { ascending: false }),
+            supabase.from("hosts").select("*").order("created_at", { ascending: false }),
+          ]);
+
+          const apps: any[] = [];
+          (artisansRes.data || []).forEach((a: any) => {
+            apps.push({
+              id: a.id,
+              type: "artisan",
+              name: a.name,
+              roleTitle: a.craft,
+              state: a.state,
+              district: a.district || a.state,
+              phone: a.phone || "N/A",
+              status: a.status || "pending",
+              details: a.story || a.admin_notes || "Craft artisan application",
+              createdAt: a.created_at,
+            });
+          });
+          (guidesRes.data || []).forEach((g: any) => {
+            apps.push({
+              id: g.id,
+              type: "guide",
+              name: g.name,
+              roleTitle: `Heritage Guide (${g.experience_years || 2} yrs)`,
+              state: g.state,
+              district: g.state,
+              phone: g.phone || "N/A",
+              status: g.status || "pending",
+              details: `Destinations: ${Array.isArray(g.destinations) ? g.destinations.join(", ") : g.destinations}`,
+              createdAt: g.created_at,
+            });
+          });
+          (hostsRes.data || []).forEach((h: any) => {
+            apps.push({
+              id: h.id,
+              type: "host",
+              name: h.host_name,
+              roleTitle: h.property_name,
+              state: h.state,
+              district: h.district || h.state,
+              phone: h.phone || "N/A",
+              status: h.status || "pending",
+              details: `Rooms: ${h.rooms}, ₹${h.price_per_night}/night`,
+              createdAt: h.created_at,
+            });
+          });
+
+          // Merge local fallback submissions
+          try {
+            const localQueue = JSON.parse(localStorage.getItem("ss_pending_applications") || "[]");
+            localQueue.forEach((lq: any) => {
+              if (!apps.some((a) => a.phone === lq.phone && a.type === lq.role)) {
+                apps.push({
+                  id: lq.ref,
+                  type: lq.role,
+                  name: lq.name,
+                  roleTitle: `${lq.role} (Offline Queue)`,
+                  state: lq.state,
+                  district: lq.district,
+                  phone: lq.phone,
+                  status: "pending",
+                  details: "Queued application",
+                  createdAt: lq.submittedAt,
+                });
+              }
+            });
+          } catch {
+            // Ignore
+          }
+
+          setCommunityApps(apps);
+        } catch (appErr) {
+          console.warn("Notice loading community apps:", appErr);
+        }
       } catch (err) {
         console.error("Error loading admin panels:", err);
       }
@@ -307,6 +437,22 @@ function Dashboard() {
 
     loadAdminData();
   }, [user, adminTab]);
+
+  const handleReviewCommunityApp = async (id: string, type: string, newStatus: "approved" | "rejected") => {
+    try {
+      const table = type === "artisan" ? "artisans" : type === "guide" ? "guides" : "hosts";
+      await supabase
+        .from(table)
+        .update({ status: newStatus, verified: newStatus === "approved" })
+        .eq("id", id);
+
+      setCommunityApps((prev) =>
+        prev.map((app) => (app.id === id ? { ...app, status: newStatus } : app))
+      );
+    } catch (err) {
+      console.error("Failed reviewing community app:", err);
+    }
+  };
 
   // Admin approves or rejects listing submissions
   const handleReviewListing = async (listingId: string, action: SellerListingStatus) => {
@@ -515,15 +661,14 @@ function Dashboard() {
                 Manage transactions, update courier stages, configure payment QR settings, and oversee platform users.
               </p>
             </div>
-            
+
             {/* Admin control panel tab selectors */}
             <div className="flex flex-wrap gap-1.5 p-1 rounded-xl bg-secondary/80 backdrop-blur border border-border/80">
               <button
                 type="button"
                 onClick={() => setAdminTab("overview")}
-                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  adminTab === "overview" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${adminTab === "overview" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <Activity className="w-3.5 h-3.5" />
                 Overview
@@ -531,9 +676,8 @@ function Dashboard() {
               <button
                 type="button"
                 onClick={() => setAdminTab("orders")}
-                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  adminTab === "orders" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${adminTab === "orders" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 Customer Orders
@@ -541,9 +685,8 @@ function Dashboard() {
               <button
                 type="button"
                 onClick={() => setAdminTab("submissions")}
-                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all relative ${
-                  adminTab === "submissions" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all relative ${adminTab === "submissions" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <Upload className="w-3.5 h-3.5" />
                 Partner Submissions
@@ -555,10 +698,23 @@ function Dashboard() {
               </button>
               <button
                 type="button"
+                onClick={() => setAdminTab("applications")}
+                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all relative ${adminTab === "applications" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-[#F47721]" />
+                Community Onboarding
+                {communityApps.filter((a) => a.status === "pending").length > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F47721] text-[9px] font-bold text-white">
+                    {communityApps.filter((a) => a.status === "pending").length}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
                 onClick={() => setAdminTab("upi")}
-                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  adminTab === "upi" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${adminTab === "upi" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <QrCode className="w-3.5 h-3.5" />
                 UPI QR Setup
@@ -566,9 +722,8 @@ function Dashboard() {
               <button
                 type="button"
                 onClick={() => setAdminTab("users")}
-                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  adminTab === "users" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all ${adminTab === "users" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 <Users className="w-3.5 h-3.5" />
                 Collectors
@@ -577,7 +732,7 @@ function Dashboard() {
           </div>
 
           <div className="stamp-card p-6 min-h-[350px] bg-card border border-border">
-            
+
             {/* TAB 1: SYSTEM OVERVIEW ANALYTICS */}
             {adminTab === "overview" && (
               <div className="grid gap-6 animate-scale-in">
@@ -648,7 +803,7 @@ function Dashboard() {
               <div className="space-y-4 animate-scale-in">
                 <div className="flex items-center justify-between gap-4 flex-wrap border-b border-border pb-3">
                   <h3 className="font-semibold text-lg">Platform Orders Ledger</h3>
-                  
+
                   {/* Search box by order ID, VPA, Transaction ID */}
                   <div className="relative max-w-sm w-full">
                     <Search className="w-4 h-4 absolute left-3 top-3.5 text-muted-foreground" />
@@ -670,73 +825,113 @@ function Dashboard() {
                     <table className="w-full text-left text-xs border-collapse">
                       <thead className="bg-secondary/60 text-muted-foreground border-b border-border">
                         <tr>
-                          <th className="px-4 py-3 font-medium">Order ID</th>
-                          <th className="px-4 py-3 font-medium">Customer Email</th>
-                          <th className="px-4 py-3 font-medium">Item Details</th>
-                          <th className="px-4 py-3 font-medium">Amount</th>
-                          <th className="px-4 py-3 font-medium">Delivery Fees</th>
-                          <th className="px-4 py-3 font-medium">Address Location Coordinates</th>
-                          <th className="px-4 py-3 font-medium">Payment Status</th>
-                          <th className="px-4 py-3 font-medium text-right">Advance Stage Action</th>
+                          <th className="px-3 py-3 font-medium">Order Ref</th>
+                          <th className="px-3 py-3 font-medium">Customer Email</th>
+                          <th className="px-3 py-3 font-medium">Item Details</th>
+                          <th className="px-3 py-3 font-medium">Amount</th>
+                          <th className="px-3 py-3 font-medium">Method / UTR</th>
+                          <th className="px-3 py-3 font-medium">Address</th>
+                          <th className="px-3 py-3 font-medium">Payment Status</th>
+                          <th className="px-3 py-3 font-medium text-right">Courier Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredAdminOrders.map((o) => (
-                          <tr key={o.id} className="border-t border-border hover:bg-accent/40 align-middle">
-                            <td className="px-4 py-3 font-mono font-bold text-foreground">{o.id}</td>
-                            <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{o.email || "guest@gmail.com"}</td>
-                            <td className="px-4 py-3 font-medium text-foreground">{o.item}</td>
-                            <td className="px-4 py-3 font-bold text-foreground">₹{o.amount.toLocaleString("en-IN")}</td>
-                            <td className="px-4 py-3 text-muted-foreground">₹{o.deliveryFee || 0}</td>
-                            <td className="px-4 py-3 max-w-[200px]">
-                              <span className="block truncate font-medium text-foreground" title={o.address}>{o.address || "N/A"}</span>
-                              {o.latitude && o.longitude ? (
-                                <span className="text-[10px] text-muted-foreground font-mono">
-                                  🌐 {o.latitude.toFixed(4)}, {o.longitude.toFixed(4)}
+                        {filteredAdminOrders.map((o) => {
+                          const isUpiPending =
+                            (o.paymentMethod === "upi_qr" || o.paymentMethod === "Pay via UPI QR") &&
+                            (o.status === "Pending" || o.paymentStatus === "pending_verification" || o.status === "placed");
+
+                          return (
+                            <tr key={o.id} className="border-t border-border hover:bg-accent/40 align-middle">
+                              <td className="px-3 py-3 font-mono font-bold text-foreground">
+                                <div>{o.id}</div>
+                                <span className="text-[10px] text-muted-foreground font-normal">{o.date}</span>
+                              </td>
+                              <td className="px-3 py-3 text-muted-foreground max-w-[140px] truncate" title={o.email}>
+                                {o.email || "guest@gmail.com"}
+                              </td>
+                              <td className="px-3 py-3 font-medium text-foreground max-w-[140px] truncate" title={o.item}>
+                                {o.item}
+                              </td>
+                              <td className="px-3 py-3 font-bold text-foreground">₹{o.amount.toLocaleString("en-IN")}</td>
+                              <td className="px-3 py-3 max-w-[160px]">
+                                <div className="flex flex-col gap-1">
+                                  <span className="text-[11px] font-semibold text-foreground">
+                                    {o.paymentMethod || "UPI QR"}
+                                  </span>
+                                  {(o.utrNumber || o.upiId) && (
+                                    <span className="font-mono text-[10px] bg-secondary px-1.5 py-0.5 rounded border border-border inline-block truncate" title={o.utrNumber || o.upiId}>
+                                      UTR: {o.utrNumber || o.upiId}
+                                    </span>
+                                  )}
+                                  {o.paymentProofUrl && (
+                                    <a
+                                      href={o.paymentProofUrl}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-[10px] text-primary hover:underline font-semibold"
+                                    >
+                                      View Proof ↗
+                                    </a>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="px-3 py-3 max-w-[150px]">
+                                <span className="block truncate font-medium text-foreground" title={o.address}>
+                                  {o.address || "N/A"}
                                 </span>
-                              ) : (
-                                <span className="text-[10px] text-muted-foreground font-mono">No Map Selected</span>
-                              )}
-                            </td>
-                            <td className="px-4 py-3">
-                              <select
-                                value={o.status}
-                                onChange={(e) => handleManualOrderUpdate(o.id, o.trackingStep, e.target.value)}
-                                className={`text-[10px] py-1 px-2 rounded-full font-bold border-none outline-none ${
-                                  o.status === "Paid"
-                                    ? "bg-emerald-500/10 text-emerald-500"
-                                    : o.status === "Pending"
-                                      ? "bg-amber-500/10 text-amber-500"
-                                      : "bg-red-500/10 text-red-500"
-                                }`}
-                              >
-                                <option value="Pending">Pending</option>
-                                <option value="Paid">Paid</option>
-                                <option value="Failed">Failed</option>
-                                <option value="Cancelled">Cancelled</option>
-                                <option value="Return Requested">Return Req</option>
-                                <option value="Returned">Returned</option>
-                              </select>
-                            </td>
-                            <td className="px-4 py-3 text-right">
-                              <select
-                                value={o.trackingStep}
-                                onChange={(e) => handleManualOrderUpdate(o.id, e.target.value as any)}
-                                className="h-8 rounded-lg border border-border bg-card px-2 text-xs font-semibold outline-none focus:border-gold"
-                              >
-                                <option value="Order Placed">Order Placed</option>
-                                <option value="Confirmed">Confirmed (Payment OK)</option>
-                                <option value="Packed">Packed & Ready</option>
-                                <option value="Shipped">Shipped (Courier)</option>
-                                <option value="Out for delivery">Out for Delivery</option>
-                                <option value="Delivered">Delivered (Completed)</option>
-                                <option value="Cancelled">Cancelled</option>
-                                <option value="Return Requested">Return Requested</option>
-                                <option value="Returned">Returned</option>
-                              </select>
-                            </td>
-                          </tr>
-                        ))}
+                              </td>
+                              <td className="px-3 py-3">
+                                <div className="flex flex-col gap-1">
+                                  <select
+                                    value={o.status === "confirmed" ? "Paid" : o.status === "placed" ? "Pending" : o.status}
+                                    onChange={(e) => handleManualOrderUpdate(o.id, o.trackingStep, e.target.value)}
+                                    className={`text-[10px] py-1 px-2 rounded-full font-bold border-none outline-none ${o.status === "Paid" || o.status === "confirmed"
+                                      ? "bg-emerald-500/10 text-emerald-600"
+                                      : o.status === "Pending" || o.status === "placed"
+                                        ? "bg-amber-500/10 text-amber-600"
+                                        : "bg-red-500/10 text-red-600"
+                                      }`}
+                                  >
+                                    <option value="Pending">Pending</option>
+                                    <option value="Paid">Paid (Verified)</option>
+                                    <option value="Failed">Failed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Return Requested">Return Req</option>
+                                    <option value="Returned">Returned</option>
+                                  </select>
+
+                                  {isUpiPending && (
+                                    <Button
+                                      size="sm"
+                                      onClick={() => handleManualOrderUpdate(o.id, "Confirmed", "Paid")}
+                                      className="h-6 text-[10px] px-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold"
+                                    >
+                                      ✓ Verify UTR
+                                    </Button>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="px-3 py-3 text-right">
+                                <select
+                                  value={o.trackingStep}
+                                  onChange={(e) => handleManualOrderUpdate(o.id, e.target.value as any)}
+                                  className="h-8 rounded-lg border border-border bg-card px-2 text-xs font-semibold outline-none focus:border-primary"
+                                >
+                                  <option value="Order Placed">Order Placed</option>
+                                  <option value="Confirmed">Confirmed (Payment OK)</option>
+                                  <option value="Packed">Packed & Ready</option>
+                                  <option value="Shipped">Shipped (Courier)</option>
+                                  <option value="Out for delivery">Out for Delivery</option>
+                                  <option value="Delivered">Delivered (Completed)</option>
+                                  <option value="Cancelled">Cancelled</option>
+                                  <option value="Return Requested">Return Requested</option>
+                                  <option value="Returned">Returned</option>
+                                </select>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -838,7 +1033,110 @@ function Dashboard() {
               </div>
             )}
 
-            {/* TAB 4: EDITABLE UPI QR SETTINGS */}
+            {/* TAB 4: COMMUNITY ONBOARDING APPLICATIONS */}
+            {adminTab === "applications" && (
+              <div className="space-y-4 animate-scale-in">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
+                  <div>
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-[#F47721]" />
+                      Community Onboarding Applications
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Review master artisans, certified local guides, and homestay hosts applying from West Bengal, Bihar, and Jharkhand.
+                    </p>
+                  </div>
+                  <Link to="/onboard">
+                    <Button size="sm" variant="outline" className="border-[#F47721]/30 text-[#F47721] text-xs">
+                      Open Public Onboarding Form
+                    </Button>
+                  </Link>
+                </div>
+
+                {communityApps.length === 0 ? (
+                  <div className="text-center py-16 text-muted-foreground border border-dashed rounded-2xl bg-secondary/10">
+                    <Users className="w-10 h-10 mx-auto mb-3 opacity-30 text-[#F47721]" />
+                    <p className="font-semibold text-sm">No community applications registered yet</p>
+                    <p className="text-xs mt-1">Applications submitted on the /onboard portal will automatically appear here for verification.</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {communityApps.map((app) => (
+                      <div
+                        key={app.id}
+                        className="rounded-2xl border border-border p-5 bg-card hover:border-[#F47721]/30 transition-all flex flex-col md:flex-row justify-between gap-4"
+                      >
+                        <div className="space-y-2 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h4 className="font-bold text-base text-foreground">
+                              {app.name}
+                            </h4>
+                            <Badge
+                              className={`text-[10px] font-bold uppercase tracking-wider ${app.type === "artisan"
+                                  ? "bg-[#FFF0E5] text-[#F47721] border-[#F47721]/30"
+                                  : app.type === "guide"
+                                    ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300"
+                                    : "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300"
+                                }`}
+                            >
+                              {app.type === "artisan" ? "Artisan" : app.type === "guide" ? "Heritage Guide" : "Homestay Host"}
+                            </Badge>
+                            <Badge
+                              variant="outline"
+                              className={`text-[10px] ${app.status === "approved"
+                                  ? "border-emerald-500 text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40"
+                                  : app.status === "rejected"
+                                    ? "border-red-500 text-red-600 bg-red-50 dark:bg-red-950/40"
+                                    : "border-amber-500 text-amber-600 bg-amber-50 dark:bg-amber-950/40"
+                                }`}
+                            >
+                              {app.status === "approved" ? "Verified & Live" : app.status === "rejected" ? "Rejected" : "Pending Verification"}
+                            </Badge>
+                          </div>
+
+                          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <span><strong>Specialty:</strong> {app.roleTitle}</span>
+                            <span>•</span>
+                            <span><strong>Location:</strong> {app.district}, {app.state}</span>
+                            <span>•</span>
+                            <span><strong>Contact:</strong> {app.phone}</span>
+                          </p>
+
+                          <p className="text-xs text-muted-foreground bg-secondary/30 p-2.5 rounded-lg border border-border/50">
+                            {app.details}
+                          </p>
+                        </div>
+
+                        <div className="flex md:flex-col items-end justify-center gap-2 shrink-0">
+                          {app.status !== "approved" && (
+                            <button
+                              type="button"
+                              onClick={() => handleReviewCommunityApp(app.id, app.type, "approved")}
+                              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow transition-colors"
+                            >
+                              <Check className="w-3.5 h-3.5" />
+                              Approve & Verify
+                            </button>
+                          )}
+                          {app.status !== "rejected" && (
+                            <button
+                              type="button"
+                              onClick={() => handleReviewCommunityApp(app.id, app.type, "rejected")}
+                              className="inline-flex items-center gap-1.5 bg-red-600/90 hover:bg-red-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+                            >
+                              <XCircle className="w-3.5 h-3.5" />
+                              Reject
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 5: EDITABLE UPI QR SETTINGS */}
             {adminTab === "upi" && (
               <div className="max-w-xl mx-auto space-y-5 py-4 animate-scale-in">
                 <div>
@@ -857,7 +1155,7 @@ function Dashboard() {
                     <input
                       value={adminUpiId}
                       onChange={(e) => setAdminUpiId(e.target.value)}
-                      placeholder="e.g. 8017599702@superyes"
+                      placeholder="e.g. 7980797454@slc"
                       className="mt-2 h-11 w-full rounded-xl border border-border bg-secondary/30 px-4 text-sm outline-none focus:border-gold font-mono"
                     />
                   </label>
@@ -867,7 +1165,7 @@ function Dashboard() {
                     <input
                       value={adminQrUrl}
                       onChange={(e) => setAdminQrUrl(e.target.value)}
-                      placeholder="e.g. /upi_qr.jpg"
+                      placeholder="e.g. /upi-qr.png"
                       className="mt-2 h-11 w-full rounded-xl border border-border bg-secondary/30 px-4 text-sm outline-none focus:border-gold font-mono"
                     />
                   </label>
@@ -1110,11 +1408,10 @@ function Dashboard() {
 
                   <div className="border-t border-border bg-secondary/15 p-4">
                     {order.trackingStep === "Cancelled" || order.trackingStep === "Return Requested" || order.trackingStep === "Returned" ? (
-                      <div className={`rounded-xl border p-4 text-center ${
-                        order.trackingStep === "Cancelled"
-                          ? "border-red-500/20 bg-red-500/5 text-red-600"
-                          : "border-amber-500/20 bg-amber-500/5 text-amber-600"
-                      }`}>
+                      <div className={`rounded-xl border p-4 text-center ${order.trackingStep === "Cancelled"
+                        ? "border-red-500/20 bg-red-500/5 text-red-600"
+                        : "border-amber-500/20 bg-amber-500/5 text-amber-600"
+                        }`}>
                         <span className="font-semibold block text-sm">
                           {order.trackingStep === "Cancelled"
                             ? "🚫 This order has been Cancelled."
@@ -1136,11 +1433,10 @@ function Dashboard() {
                             <div key={step} className="flex min-w-28 flex-1 items-center">
                               <div className="flex flex-col items-center text-center">
                                 <span
-                                  className={`grid h-8 w-8 place-items-center rounded-full border-2 ${
-                                    complete
-                                      ? "border-emerald-500 bg-emerald-500 text-white"
-                                      : "border-border bg-card text-muted-foreground"
-                                  } ${active ? "ring-4 ring-emerald-500/15" : ""}`}
+                                  className={`grid h-8 w-8 place-items-center rounded-full border-2 ${complete
+                                    ? "border-emerald-500 bg-emerald-500 text-white"
+                                    : "border-border bg-card text-muted-foreground"
+                                    } ${active ? "ring-4 ring-emerald-500/15" : ""}`}
                                 >
                                   {complete ? (
                                     <CheckCircle2 className="h-4 w-4" />
@@ -1149,18 +1445,16 @@ function Dashboard() {
                                   )}
                                 </span>
                                 <span
-                                  className={`mt-2 text-[10px] font-semibold tracking-tight ${
-                                    complete ? "text-foreground" : "text-muted-foreground"
-                                  }`}
+                                  className={`mt-2 text-[10px] font-semibold tracking-tight ${complete ? "text-foreground" : "text-muted-foreground"
+                                    }`}
                                 >
                                   {step}
                                 </span>
                               </div>
                               {index < trackingSteps.length - 1 && (
                                 <div
-                                  className={`mx-2 h-0.5 flex-1 rounded-full ${
-                                    index < currentStepIndex ? "bg-emerald-500" : "bg-border"
-                                  }`}
+                                  className={`mx-2 h-0.5 flex-1 rounded-full ${index < currentStepIndex ? "bg-emerald-500" : "bg-border"
+                                    }`}
                                 />
                               )}
                             </div>

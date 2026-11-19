@@ -115,6 +115,16 @@ function AuthPage() {
           });
         }
 
+        if (result.needsEmailConfirmation) {
+          setStatus({
+            type: "success",
+            text: "Account registered! If email confirmation is enabled in your Supabase project, please check your inbox (or turn off 'Confirm email' in Supabase Auth settings to log in immediately).",
+          });
+          window.localStorage.setItem(REGISTRATION_STORAGE_KEY, "true");
+          window.setTimeout(() => setIsSignup(false), 2000);
+          return;
+        }
+
         setStatus({
           type: "success",
           text: result.message,

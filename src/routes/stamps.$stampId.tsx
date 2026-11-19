@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import {
   ArrowLeft,
+  ArrowRight,
   BadgeCheck,
   Heart,
   IndianRupee,
@@ -29,9 +30,10 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StampCard } from "@/components/StampCard";
-import { getStamp, stamps } from "@/lib/stamps";
+import { getStamp, stamps, useStampAvailability } from "@/lib/stamps";
 import { addStampToCartForSignedInUser } from "@/lib/cart";
 import { readWishlist, toggleWishlistInSupabase } from "@/lib/wishlist";
+import { destinations } from "@/lib/destinations";
 
 const stampDetailSearchSchema = z.object({
   mode: fallback(z.enum(["buy", "details"]), "details").default("details"),
@@ -96,8 +98,10 @@ function StampDetail() {
   const { mode } = Route.useSearch();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const available = useStampAvailability(stamp.id);
+
   const [activePanel, setActivePanel] = useState<"buy" | "details">(
-    mode === "buy" ? "buy" : "details",
+    mode === "buy" && available ? "buy" : "details",
   );
   const [pincode, setPincode] = useState("");
   const [message, setMessage] = useState("");
@@ -126,9 +130,9 @@ function StampDetail() {
   });
 
   useEffect(() => {
-    setActivePanel(mode === "buy" ? "buy" : "details");
+    setActivePanel(mode === "buy" && available ? "buy" : "details");
     setWishlisted(readWishlist().includes(stamp.id));
-  }, [mode, stamp.id]);
+  }, [mode, stamp.id, available]);
 
   if (pathname === `/stamps/${stamp.id}/buy`) {
     return <Outlet />;
@@ -162,6 +166,7 @@ function StampDetail() {
   };
 
   const addToCart = async () => {
+    if (!available) return;
     const added = await addStampToCartForSignedInUser(stamp);
     if (!added) {
       navigate({ to: "/auth" });
@@ -209,31 +214,37 @@ function StampDetail() {
                 />
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2">
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-12 w-full gap-2 bg-gold text-gold-foreground hover:bg-gold/90"
-                  aria-disabled={!stamp.available}
-                >
-                  <a
-                    href={stamp.available ? `/stamps/${stamp.id}/buy#buy-section` : undefined}
-                    onClick={(event) => {
-                      if (!stamp.available) event.preventDefault();
-                    }}
+                {available ? (
+                  <Button
+                    asChild
+                    size="lg"
+                    className="h-12 w-full gap-2 bg-gold text-gold-foreground hover:bg-gold/90"
+                  >
+                    <a href={`/stamps/${stamp.id}/buy#buy-section`}>
+                      <ShoppingBag className="w-4 h-4" />
+                      Buy Now
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    disabled
+                    size="lg"
+                    className="h-12 w-full gap-2 bg-muted text-muted-foreground cursor-not-allowed"
                   >
                     <ShoppingBag className="w-4 h-4" />
-                    Buy Now
-                  </a>
-                </Button>
+                    Sold Out
+                  </Button>
+                )}
                 <Button
                   type="button"
                   size="lg"
                   variant="outline"
                   className="h-12 gap-2"
+                  disabled={!available}
                   onClick={addToCart}
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  Add Cart
+                  {available ? "Add Cart" : "Unavailable"}
                 </Button>
               </div>
             </div>
@@ -246,7 +257,7 @@ function StampDetail() {
                   {stamp.category}
                 </Badge>
                 <Badge variant="outline">{stamp.year}</Badge>
-                {stamp.available ? (
+                {available ? (
                   <Badge className="bg-emerald-100 text-emerald-900 hover:bg-emerald-100">
                     In stock
                   </Badge>
@@ -278,19 +289,22 @@ function StampDetail() {
 
             <div className="rounded-2xl border border-border bg-card p-5">
               <div className="mb-4 flex border-b border-border">
-                {(["buy", "details"] as const).map((panel) => (
-                  <button
-                    key={panel}
-                    onClick={() => setActivePanel(panel)}
-                    className={`px-4 py-3 text-sm font-medium capitalize ${
-                      activePanel === panel
-                        ? "border-b-2 border-primary text-foreground"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    {panel === "details" ? "Details" : panel}
-                  </button>
-                ))}
+                {(["buy", "details"] as const).map((panel) => {
+                  if (panel === "buy" && !available) return null;
+                  return (
+                    <button
+                      key={panel}
+                      onClick={() => setActivePanel(panel)}
+                      className={`px-4 py-3 text-sm font-medium capitalize ${
+                        activePanel === panel
+                          ? "border-b-2 border-primary text-foreground"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {panel === "details" ? "Details" : panel}
+                    </button>
+                  );
+                })}
               </div>
 
               {message && (
@@ -402,6 +416,41 @@ function StampDetail() {
                 </div>
               </div>
             )}
+
+            {/* ===== EXPLORE THIS DESTINATION (Stamp-to-Destination linking) ===== */}
+            {(() => {
+              // Find a matching destination based on stamp's state/city/name
+              const matchedDest = destinations.find((d) => {
+                const stampText = `${stamp.name} ${stamp.state} ${stamp.city} ${stamp.category}`.toLowerCase();
+                const destText = `${d.name} ${d.state} ${d.district}`.toLowerCase();
+                // Match by state and name overlap
+                if (stamp.state && d.state === stamp.state) return true;
+                if (d.name && stampText.includes(d.name.toLowerCase())) return true;
+                if (stamp.city && destText.includes(stamp.city.toLowerCase())) return true;
+                return false;
+              });
+              if (!matchedDest) return null;
+              return (
+                <div className="rounded-2xl border border-[#F47721]/30 bg-gradient-to-br from-[#FFF0E5] to-white p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <MapPin className="w-5 h-5 text-[#F47721]" />
+                    <h2 className="font-semibold text-[#252525]">Explore This Destination</h2>
+                  </div>
+                  <p className="text-sm text-[#777777] mb-4">
+                    This stamp is connected to <strong>{matchedDest.name}</strong>, {matchedDest.state}. Discover its heritage, local guides, and artisan experiences.
+                  </p>
+                  <Link
+                    to="/heritage/$destinationId"
+                    params={{ destinationId: matchedDest.id }}
+                    className="flex items-center gap-2 w-full justify-center py-3 px-4 rounded-xl bg-[#F47721] text-white font-semibold text-sm hover:bg-[#E85D04] transition-colors"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    Explore {matchedDest.name}
+                    <ArrowRight className="w-4 h-4 ml-auto" />
+                  </Link>
+                </div>
+              );
+            })()}
 
             <div className="rounded-2xl border border-border bg-card p-5">
               <h2 className="flex items-center gap-2 font-display text-xl font-semibold">

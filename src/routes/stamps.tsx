@@ -175,10 +175,19 @@ function StampsPage() {
 
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <video
+          ref={(el) => {
+            if (el) {
+              el.muted = true;
+              el.defaultMuted = true;
+              el.play().catch(() => {});
+            }
+          }}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
+          src="/background video 1.mp4"
           className="h-full w-full object-cover"
         >
           <source

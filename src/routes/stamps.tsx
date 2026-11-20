@@ -81,7 +81,7 @@ function StampsPage() {
 
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
 
-  const [maxPrice, setMaxPrice] = useState(100);
+  const [maxPrice, setMaxPrice] = useState(500);
 
   // ================= VOICE SEARCH =================
 
@@ -150,7 +150,7 @@ function StampsPage() {
         .join(" ")
         .toLowerCase();
 
-      // ✅ SEARCH BY STATE / CITY / NAME / CATEGORY
+      // ✅ SEARCH BY STATE / CITY / NAME / CATEGORY — fixed to use substring match
       if (query && !searchableFields.includes(query)) {
         return false;
       }
@@ -364,7 +364,7 @@ function StampsPage() {
             <input
               type="range"
               min={1}
-              max={100}
+              max={500}
               step={1}
               value={maxPrice}
               onChange={(e) =>
@@ -380,7 +380,7 @@ function StampsPage() {
             onClick={() => {
               setCat("All");
               setRarity("All");
-              setMaxPrice(100);
+              setMaxPrice(500);
               setQ("");
             }}
             className="mt-8 w-full bg-yellow-500 text-black rounded-xl py-3 text-sm font-medium hover:opacity-90 transition"

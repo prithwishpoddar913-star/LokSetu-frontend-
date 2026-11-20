@@ -5,7 +5,6 @@ import { useStampAvailability } from "@/lib/stamps";
 import { addStampToCartForSignedInUser } from "@/lib/cart";
 import {
   readWishlist,
-  toggleWishlist,
   toggleWishlistInSupabase,
   WISHLIST_UPDATED_EVENT,
 } from "@/lib/wishlist";
@@ -26,76 +25,48 @@ export function StampCard({
   const navigate = useNavigate();
   const available = useStampAvailability(stamp.id);
 
-  const [wishlisted, setWishlisted] =
-    useState(false);
+  const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
     const syncWishlist = () =>
-      setWishlisted(
-        readWishlist().includes(stamp.id)
-      );
+      setWishlisted(readWishlist().includes(stamp.id));
 
     syncWishlist();
 
-    window.addEventListener(
-      WISHLIST_UPDATED_EVENT,
-      syncWishlist
-    );
-
-    window.addEventListener(
-      "storage",
-      syncWishlist
-    );
+    window.addEventListener(WISHLIST_UPDATED_EVENT, syncWishlist);
+    window.addEventListener("storage", syncWishlist);
 
     return () => {
-      window.removeEventListener(
-        WISHLIST_UPDATED_EVENT,
-        syncWishlist
-      );
-
-      window.removeEventListener(
-        "storage",
-        syncWishlist
-      );
+      window.removeEventListener(WISHLIST_UPDATED_EVENT, syncWishlist);
+      window.removeEventListener("storage", syncWishlist);
     };
   }, [stamp.id]);
 
   const addToCart = async () => {
     if (!available) return;
 
-    const added =
-      await addStampToCartForSignedInUser(
-        stamp
-      );
+    const added = await addStampToCartForSignedInUser(stamp);
 
     if (!added) {
       window.sessionStorage.setItem(
         "stampSafar.authNotice",
         "Please login first to add stamps to cart."
       );
-
-      navigate({
-        to: "/auth",
-      });
+      navigate({ to: "/auth" });
     }
   };
 
   return (
     <article
       className={`stamp-card group overflow-hidden ${
-        !available
-          ? "opacity-80"
-          : ""
+        !available ? "opacity-80" : ""
       }`}
     >
       {/* IMAGE */}
-
       <div className="relative">
         <Link
           to="/stamps/$stampId"
-          params={{
-            stampId: stamp.id,
-          }}
+          params={{ stampId: stamp.id }}
           className="block"
         >
           <div className="relative aspect-[4/5] bg-gradient-to-br from-secondary/60 to-secondary/30 overflow-hidden grid place-items-center p-5">
@@ -125,7 +96,6 @@ export function StampCard({
         </Link>
 
         {/* WISHLIST */}
-
         <button
           type="button"
           onClick={async () => {
@@ -138,49 +108,33 @@ export function StampCard({
               : "border-border bg-card/90 text-muted-foreground hover:border-gold hover:text-foreground"
           }`}
         >
-          <Heart
-            className={`h-4 w-4 ${
-              wishlisted
-                ? "fill-current"
-                : ""
-            }`}
-          />
+          <Heart className={`h-4 w-4 ${wishlisted ? "fill-current" : ""}`} />
         </button>
       </div>
 
       {/* CONTENT */}
-
       <div className="p-4 border-t border-border">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <Link
-              to="/stamps/$stampId"
-              params={{
-                stampId: stamp.id,
-              }}
-            >
+            <Link to="/stamps/$stampId" params={{ stampId: stamp.id }}>
               <h3 className="font-display font-semibold leading-tight truncate hover:text-primary">
                 {stamp.name}
               </h3>
             </Link>
 
             <p className="text-xs text-muted-foreground mt-0.5">
-              {stamp.year} ·{" "}
-              {stamp.category}
+              {stamp.year} · {stamp.category}
             </p>
           </div>
 
           <Badge
             variant="outline"
             className={`shrink-0 text-[10px] ${
-              stamp.rarity ===
-              "Legendary"
+              stamp.rarity === "Legendary"
                 ? "border-gold text-gold-foreground bg-gold/15"
-                : stamp.rarity ===
-                    "Very Rare"
+                : stamp.rarity === "Very Rare"
                   ? "border-primary/40 bg-primary/5"
-                  : stamp.rarity ===
-                      "Rare"
+                  : stamp.rarity === "Rare"
                     ? "border-border"
                     : "border-border text-muted-foreground"
             }`}
@@ -190,39 +144,32 @@ export function StampCard({
         </div>
 
         {/* PRICE */}
-
         <div className="mt-3 flex items-center justify-between">
           <span className="font-semibold">
-            ₹
-            {stamp.price.toLocaleString(
-              "en-IN"
-            )}
+            ₹{stamp.price.toLocaleString("en-IN")}
           </span>
 
           <span
             className={`text-xs ${
-              available
-                ? "text-emerald-600"
-                : "text-red-500 font-medium"
+              available ? "text-emerald-600" : "text-red-500 font-medium"
             }`}
           >
-            {available
-              ? "● Available"
-              : "● Sold Out"}
+            {available ? "● Available" : "● Sold Out"}
           </span>
         </div>
 
         {/* BUTTONS */}
-
         <div className="mt-4 grid grid-cols-2 gap-2">
           {available ? (
-            <a
-              href={`/stamps/${stamp.id}/buy#buy-section`}
+            // ✅ Use TanStack Router Link — avoids full page reload and 404 on Render
+            <Link
+              to="/stamps/$stampId/buy"
+              params={{ stampId: stamp.id }}
               className="inline-flex h-10 w-full items-center justify-center gap-1 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <ShoppingBag className="h-4 w-4" />
               Buy
-            </a>
+            </Link>
           ) : (
             <button
               disabled
@@ -244,10 +191,7 @@ export function StampCard({
             }`}
           >
             <ShoppingCart className="h-4 w-4" />
-
-            {available
-              ? "Add Cart"
-              : "Unavailable"}
+            {available ? "Add Cart" : "Unavailable"}
           </button>
         </div>
       </div>

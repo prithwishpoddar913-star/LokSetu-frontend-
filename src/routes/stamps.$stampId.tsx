@@ -1,5 +1,4 @@
 import {
-  Outlet,
   createFileRoute,
   Link,
   notFound,
@@ -135,6 +134,8 @@ function StampDetail() {
   }, [mode, stamp.id, available]);
 
   if (pathname === `/stamps/${stamp.id}/buy`) {
+    // TanStack Router renders the child /buy route automatically via Outlet.
+    // This redirect ensures deep-link navigation also works.
     return <Outlet />;
   }
 
@@ -220,10 +221,10 @@ function StampDetail() {
                     size="lg"
                     className="h-12 w-full gap-2 bg-gold text-gold-foreground hover:bg-gold/90"
                   >
-                    <a href={`/stamps/${stamp.id}/buy#buy-section`}>
+                    <Link to="/stamps/$stampId/buy" params={{ stampId: stamp.id }}>
                       <ShoppingBag className="w-4 h-4" />
                       Buy Now
-                    </a>
+                    </Link>
                   </Button>
                 ) : (
                   <Button
@@ -361,10 +362,10 @@ function StampDetail() {
 
                   <div className="flex flex-col gap-2 sm:flex-row">
                     <Button asChild className="flex-1 gap-2" size="lg">
-                      <a href={`/stamps/${stamp.id}/buy#buy-section`}>
+                      <Link to="/stamps/$stampId/buy" params={{ stampId: stamp.id }}>
                         <IndianRupee className="h-4 w-4" />
                         Place Order
-                      </a>
+                      </Link>
                     </Button>
                     <Button
                       variant={wishlisted ? "default" : "outline"}

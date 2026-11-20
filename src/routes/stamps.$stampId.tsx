@@ -1,4 +1,5 @@
 import {
+  Outlet,
   createFileRoute,
   Link,
   notFound,

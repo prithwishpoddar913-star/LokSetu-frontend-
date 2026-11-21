@@ -215,13 +215,13 @@ function StampsPage() {
             </p>
           </div>
 
-          <div className="px-5 py-4 flex items-center gap-5 rounded-3xl border border-white/10 bg-black/35 backdrop-blur-md">
+          <div className="px-5 py-4 flex items-center gap-5 rounded-3xl border border-white/20 dark:border-white/10 bg-black/40 dark:bg-black/35 backdrop-blur-md">
             <div>
-              <div className="text-2xl font-bold text-yellow-400">
+              <div className="text-2xl font-bold text-amber-400 dark:text-yellow-400">
                 {stamps.length}+
               </div>
 
-              <div className="text-xs text-gray-300 uppercase">
+              <div className="text-xs text-zinc-300 dark:text-gray-300 uppercase tracking-wider">
                 Total Stamps
               </div>
             </div>
@@ -229,11 +229,11 @@ function StampsPage() {
             <div className="w-px h-10 bg-white/20" />
 
             <div>
-              <div className="text-2xl font-bold text-yellow-400">
+              <div className="text-2xl font-bold text-amber-400 dark:text-yellow-400">
                 {filtered.length}
               </div>
 
-              <div className="text-xs text-gray-300 uppercase">
+              <div className="text-xs text-zinc-300 dark:text-gray-300 uppercase tracking-wider">
                 Showing
               </div>
             </div>
@@ -243,7 +243,7 @@ function StampsPage() {
         {/* ================= SEARCH ================= */}
 
         <div className="mt-8 relative max-w-2xl">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-300" />
 
           <Input
             value={q}
@@ -259,7 +259,7 @@ function StampsPage() {
               )
             }
             placeholder="Search by stamp, state, city, category or rarity..."
-            className="pl-12 pr-14 h-14 text-base rounded-2xl border border-white/10 bg-black/40 text-white placeholder:text-gray-300 backdrop-blur-md"
+            className="pl-12 pr-14 h-14 text-base rounded-2xl border border-white/20 bg-black/50 text-white placeholder:text-zinc-300 backdrop-blur-md focus-visible:ring-amber-400/50"
           />
 
           {/* ================= MIC BUTTON ================= */}
@@ -267,7 +267,7 @@ function StampsPage() {
           <button
             type="button"
             onClick={startVoiceSearch}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-yellow-400 transition"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-300 hover:text-amber-400 transition"
           >
             <Mic className="w-5 h-5" />
           </button>
@@ -275,14 +275,14 @@ function StampsPage() {
           {/* ================= SUGGESTIONS ================= */}
 
           {suggestionsOpen && q.trim() && (
-            <div className="absolute left-0 right-0 top-16 z-30 overflow-hidden rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl shadow-xl">
+            <div className="absolute left-0 right-0 top-16 z-30 overflow-hidden rounded-2xl border border-border bg-popover text-popover-foreground shadow-2xl">
               {suggestions.length ? (
                 suggestions.map((stamp) => (
                   <Link
                     key={stamp.id}
                     to="/stamps/$stampId"
                     params={{ stampId: stamp.id }}
-                    className="flex items-center gap-3 border-b border-white/10 px-4 py-3 last:border-b-0 hover:bg-white/10"
+                    className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 hover:bg-muted transition-colors"
                   >
                     <img
                       src={stamp.image}
@@ -291,19 +291,19 @@ function StampsPage() {
                     />
 
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-semibold text-white">
+                      <span className="block truncate text-sm font-semibold text-foreground">
                         {stamp.name}
                       </span>
 
-                      <span className="flex items-center gap-1 text-xs text-gray-300 mt-1">
-                        <MapPin className="w-3 h-3" />
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                        <MapPin className="w-3 h-3 text-[#F47721]" />
 
                         {stamp.city
                           ? `${stamp.city}, ${stamp.state}`
                           : stamp.state}
                       </span>
 
-                      <span className="block text-xs text-gray-400 mt-1">
+                      <span className="block text-xs text-muted-foreground mt-1">
                         {stamp.year} · {stamp.rarity} · ₹
                         {stamp.price.toLocaleString("en-IN")}
                       </span>
@@ -311,7 +311,7 @@ function StampsPage() {
                   </Link>
                 ))
               ) : (
-                <div className="px-4 py-4 text-sm text-gray-300">
+                <div className="px-4 py-4 text-sm text-muted-foreground">
                   No quick match. Results will update below.
                 </div>
               )}
@@ -325,9 +325,9 @@ function StampsPage() {
       <section className="container mx-auto px-4 sm:px-6 py-6 grid lg:grid-cols-[280px_1fr] gap-8">
         {/* ================= SIDEBAR ================= */}
 
-        <aside className="p-6 h-fit lg:sticky lg:top-20 rounded-3xl border border-white/10 bg-black/35 backdrop-blur-md">
-          <div className="flex items-center gap-2 mb-6 text-white">
-            <SlidersHorizontal className="w-5 h-5" />
+        <aside className="p-6 h-fit lg:sticky lg:top-20 rounded-3xl border border-border bg-card text-card-foreground shadow-sm">
+          <div className="flex items-center gap-2 mb-6 text-foreground">
+            <SlidersHorizontal className="w-5 h-5 text-[#F47721]" />
 
             <h2 className="font-semibold text-lg">
               Filters
@@ -352,11 +352,11 @@ function StampsPage() {
 
           <div className="mt-7">
             <div className="flex justify-between text-sm mb-3">
-              <span className="text-gray-300">
+              <span className="text-muted-foreground">
                 Maximum Price
               </span>
 
-              <span className="font-semibold text-yellow-400">
+              <span className="font-semibold text-[#F47721]">
                 ₹{maxPrice.toLocaleString("en-IN")}
               </span>
             </div>
@@ -370,7 +370,7 @@ function StampsPage() {
               onChange={(e) =>
                 setMaxPrice(Number(e.target.value))
               }
-              className="w-full accent-yellow-400"
+              className="w-full accent-[#F47721]"
             />
           </div>
 
@@ -383,7 +383,7 @@ function StampsPage() {
               setMaxPrice(500);
               setQ("");
             }}
-            className="mt-8 w-full bg-yellow-500 text-black rounded-xl py-3 text-sm font-medium hover:opacity-90 transition"
+            className="mt-8 w-full bg-[#F47721] hover:bg-[#E85D04] text-white rounded-xl py-3 text-sm font-semibold shadow-sm transition"
           >
             Reset Filters
           </button>
@@ -393,7 +393,7 @@ function StampsPage() {
 
         <div>
           <div className="flex items-center justify-between mb-5">
-            <div className="text-sm text-gray-200">
+            <div className="text-sm text-muted-foreground font-medium">
               {filtered.length} stamps found
             </div>
           </div>
@@ -413,7 +413,7 @@ function StampsPage() {
           </div>
 
           {filtered.length === 0 && (
-            <div className="p-16 text-center text-gray-300 rounded-3xl border border-white/10 bg-black/30 backdrop-blur-md">
+            <div className="p-16 text-center text-muted-foreground rounded-3xl border border-border bg-card shadow-sm">
               No stamps match your filters.
             </div>
           )}
@@ -441,7 +441,7 @@ function FilterGroup({
 }) {
   return (
     <div className="mt-6 first:mt-0">
-      <div className="text-sm font-semibold mb-3 text-white">
+      <div className="text-sm font-semibold mb-3 text-foreground">
         {label}
       </div>
 
@@ -452,8 +452,8 @@ function FilterGroup({
             onClick={() => onChange(o)}
             className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-300 ${
               value === o
-                ? "bg-yellow-500 text-black border-yellow-500 scale-105"
-                : "bg-black/30 text-white border-white/10 hover:border-yellow-400 hover:bg-yellow-400/10"
+                ? "bg-[#F47721] text-white border-[#F47721] scale-105 shadow-xs font-semibold"
+                : "bg-secondary/40 text-foreground border-border hover:border-[#F47721] hover:bg-[#FFF0E5] dark:hover:bg-[#F47721]/15"
             }`}
           >
             {o}

@@ -87,9 +87,9 @@
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.9 0.02 230);
-  --input: oklch(0.92 0.018 230);
-  --ring: oklch(0.78 0.13 80);
+  --border: oklch(0.86 0.02 230);
+  --input: oklch(0.88 0.02 230);
+  --ring: oklch(0.65 0.15 45);
 
   --sidebar: oklch(0.985 0.006 230);
   --sidebar-foreground: oklch(0.22 0.04 250);
@@ -174,6 +174,13 @@
   }
 
   .gold-gradient-text {
+    background: linear-gradient(135deg, #B45309, #D97706);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dark .gold-gradient-text {
     background: linear-gradient(135deg, oklch(0.7 0.14 70), oklch(0.85 0.13 90));
     -webkit-background-clip: text;
     background-clip: text;

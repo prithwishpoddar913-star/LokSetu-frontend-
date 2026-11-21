@@ -299,9 +299,9 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             })}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Language Switcher Pill (EN | বাংলা | हिन्दी) */}
-            <div className="flex items-center rounded-full border border-[#F1D8C5] dark:border-white/10 bg-white dark:bg-[#181A20] p-0.5 text-xs shadow-xs">
+            <div className="hidden xs:flex items-center rounded-full border border-[#F1D8C5] dark:border-white/10 bg-white dark:bg-[#181A20] p-0.5 text-xs shadow-xs">
               {LANGUAGE_OPTIONS.map((opt) => (
                 <button
                   key={opt.code}
@@ -495,8 +495,29 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
         {/* Mobile Nav Drawer */}
         {open && (
-          <div className="xl:hidden border-t border-[#F1D8C5] dark:border-white/10 bg-white dark:bg-[#181A20] shadow-xl">
+          <div className="xl:hidden border-t border-[#F1D8C5] dark:border-white/10 bg-white dark:bg-[#181A20] shadow-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="container mx-auto px-4 py-3 flex flex-col gap-1">
+              {/* Mobile Language Switcher Row */}
+              <div className="flex items-center justify-between py-2 border-b border-[#F1D8C5] dark:border-white/10 mb-1">
+                <span className="text-xs font-medium text-muted-foreground">Language:</span>
+                <div className="flex items-center rounded-full border border-[#F1D8C5] dark:border-white/10 bg-white dark:bg-[#181A20] p-0.5 text-xs">
+                  {LANGUAGE_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.code}
+                      type="button"
+                      onClick={() => setLang(opt.code)}
+                      className={`px-2.5 py-1 rounded-full text-xs font-semibold transition ${
+                        lang === opt.code
+                          ? "bg-[#F47721] text-white shadow-xs"
+                          : "text-[#777777] dark:text-zinc-300 hover:text-[#F47721]"
+                      }`}
+                    >
+                      {opt.nativeLabel}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {navLinks.map((n) => (
                 <Link
                   key={n.to}
@@ -594,13 +615,13 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <button
         type="button"
         onClick={() => setCartOpen(true)}
-        className={`fixed bottom-5 left-5 z-40 inline-flex h-12 items-center gap-2 rounded-full border border-[#F47721]/40 bg-white dark:bg-[#181A20] px-4 text-sm font-semibold shadow-xl transition hover:bg-[#FFF0E5] dark:hover:bg-[#F47721]/15 ${cartPulse ? "animate-cart-pop" : ""
+        className={`fixed bottom-5 left-4 sm:left-5 z-40 inline-flex h-11 sm:h-12 items-center gap-1.5 sm:gap-2 rounded-full border border-[#F47721]/40 bg-white dark:bg-[#181A20] px-3.5 sm:px-4 text-xs sm:text-sm font-semibold shadow-xl transition hover:bg-[#FFF0E5] dark:hover:bg-[#F47721]/15 ${cartPulse ? "animate-cart-pop" : ""
           }`}
         aria-label="Open cart"
       >
-        <ShoppingCart className="h-5 w-5 text-[#F47721]" />
+        <ShoppingCart className="h-4 sm:h-5 w-4 sm:w-5 text-[#F47721]" />
         <span className="text-[#252525] dark:text-zinc-100">Cart</span>
-        <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#F47721] px-1 text-[10px] font-bold text-white">
+        <span className="grid h-4 sm:h-5 min-w-4 sm:min-w-5 place-items-center rounded-full bg-[#F47721] px-1 text-[9px] sm:text-[10px] font-bold text-white">
           {cartItems.length}
         </span>
       </button>

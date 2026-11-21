@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -17,6 +17,7 @@ import {
   Upload,
   WalletCards,
   Clock,
+  Loader2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -91,6 +92,9 @@ export const Route = createFileRoute("/stamps/$stampId/buy")({
 
 function BuyStampPage() {
   const { stamp } = Route.useLoaderData();
+  const navigate = useNavigate();
+  const [authChecking, setAuthChecking] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<(typeof paymentMethods)[number]["id"]>("upi_qr");
   const [upiId, setUpiId] = useState("");
   const [address, setAddress] = useState("");
@@ -133,6 +137,58 @@ function BuyStampPage() {
     amount: total,
     orderNumber: `SS-${Date.now().toString().slice(-6)}`,
   });
+
+  // 0. Enforce Authentication Guard Before Purchasing
+  useEffect(() => {
+    let isSubscribed = true;
+
+    const checkAuthentication = async () => {
+      try {
+        if (!supabase || !isSupabaseConfigured) {
+          // If Supabase is not configured in local environment, allow pass-through
+          if (isSubscribed) {
+            setIsAuthenticated(true);
+            setAuthChecking(false);
+          }
+          return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) {
+          // Store redirect URL and user-friendly notice
+          window.sessionStorage.setItem(
+            "stampSafar.authNotice",
+            "Please log in to your account before purchasing this stamp."
+          );
+          window.sessionStorage.setItem(
+            "stampSafar.redirectAfterLogin",
+            window.location.pathname
+          );
+
+          if (isSubscribed) {
+            navigate({ to: "/auth" });
+          }
+          return;
+        }
+
+        if (isSubscribed) {
+          setIsAuthenticated(true);
+          setAuthChecking(false);
+        }
+      } catch (err) {
+        console.error("Auth check failed:", err);
+        if (isSubscribed) {
+          setAuthChecking(false);
+        }
+      }
+    };
+
+    checkAuthentication();
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [navigate]);
 
   // 1. Fetch saved addresses and payment config on load
   useEffect(() => {
@@ -382,7 +438,7 @@ function BuyStampPage() {
       await addAddressToSupabase(address);
       setSavedAddresses(readAddresses());
 
-      let userId = "guest-user-id";
+      let userId = "authenticated-collector";
       let userEmail = "collector@stampsafar.com";
 
       if (supabase && isSupabaseConfigured) {
@@ -392,6 +448,13 @@ function BuyStampPage() {
         if (session?.user) {
           userId = session.user.id;
           userEmail = session.user.email || "";
+        } else {
+          // If session expired while on page, redirect to login
+          window.sessionStorage.setItem("stampSafar.authNotice", "Please log in to your account before purchasing this stamp.");
+          window.sessionStorage.setItem("stampSafar.redirectAfterLogin", window.location.pathname);
+          navigate({ to: "/auth" });
+          setIsProcessing(false);
+          return;
         }
       }
 
@@ -698,6 +761,23 @@ function BuyStampPage() {
       }
     }
   };
+
+  // =========================================================================
+  // VIEW: AUTHENTICATION CHECKING SPINNER SCREEN
+  // =========================================================================
+  if (authChecking) {
+    return (
+      <SiteLayout>
+        <section className="container mx-auto px-4 py-24 max-w-md text-center">
+          <div className="rounded-2xl border border-border bg-card p-8 shadow-sm flex flex-col items-center justify-center">
+            <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
+            <h2 className="text-lg font-semibold text-foreground">Verifying Account Session</h2>
+            <p className="mt-1 text-xs text-muted-foreground">Checking authentication status before continuing to checkout...</p>
+          </div>
+        </section>
+      </SiteLayout>
+    );
+  }
 
   // =========================================================================
   // VIEW: UPI PENDING VERIFICATION SCREEN (For UPI QR)

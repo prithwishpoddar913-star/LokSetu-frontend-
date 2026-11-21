@@ -316,9 +316,8 @@ function AuthPage() {
 
       {/* Auth container */}
       <div
-        className={`relative w-full max-w-[1160px] min-h-[640px] rounded-[2rem] shadow-2xl bg-card border border-border overflow-hidden auth-container ${
-          isSignup ? "is-signup" : ""
-        }`}
+        className={`relative w-full max-w-[1160px] min-h-[640px] rounded-[2rem] shadow-2xl bg-card border border-border overflow-hidden auth-container ${isSignup ? "is-signup" : ""
+          }`}
       >
         {recoveryMode ? (
           <div className="flex min-h-[640px] items-center justify-center p-8 sm:p-12">
@@ -366,11 +365,10 @@ function AuthPage() {
 
               {status && (
                 <div
-                  className={`mt-3 rounded-xl border px-3 py-2 text-xs ${
-                    status.type === "success"
+                  className={`mt-3 rounded-xl border px-3 py-2 text-xs ${status.type === "success"
                       ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-700"
                       : "border-destructive/25 bg-destructive/10 text-destructive"
-                  }`}
+                    }`}
                 >
                   {status.text}
                 </div>
@@ -387,59 +385,59 @@ function AuthPage() {
           </div>
         ) : (
           <>
-        {/* Sign In form panel */}
-        <FormPanel
-          side="left"
-          title="Welcome back"
-          subtitle="Sign in to your Stamp Safar account"
-          cta="Sign In"
-          loading={loading}
-          showPw={showPw}
-          setShowPw={setShowPw}
-          onSubmit={(event) => submit(event, "login")}
-          onForgotPassword={resetPassword}
-          onProviderLogin={signInWithProvider}
-          socialLoading={socialLoading}
-          status={status}
-          mode="login"
-        />
-
-        {/* Sign Up form panel */}
-        <FormPanel
-          side="right"
-          title="Create account"
-          subtitle="Begin your philately journey today"
-          cta="Sign Up"
-          loading={loading}
-          showPw={showPw}
-          setShowPw={setShowPw}
-          onSubmit={(event) => submit(event, "signup")}
-          onForgotPassword={resetPassword}
-          onProviderLogin={signInWithProvider}
-          socialLoading={socialLoading}
-          status={status}
-          mode="signup"
-        />
-
-        {/* Sliding overlay */}
-        <div className="overlay-container">
-          <div className="overlay">
-            <OverlayPanel
+            {/* Sign In form panel */}
+            <FormPanel
               side="left"
-              title="Hello, Collector!"
-              text="Already part of Stamp Safar? Sign in to access your collection, wishlist and trades."
+              title="Welcome back"
+              subtitle="Sign in to your Stamp Safar account"
               cta="Sign In"
-              onClick={() => setIsSignup(false)}
+              loading={loading}
+              showPw={showPw}
+              setShowPw={setShowPw}
+              onSubmit={(event) => submit(event, "login")}
+              onForgotPassword={resetPassword}
+              onProviderLogin={signInWithProvider}
+              socialLoading={socialLoading}
+              status={status}
+              mode="login"
             />
-            <OverlayPanel
+
+            {/* Sign Up form panel */}
+            <FormPanel
               side="right"
-              title="New here?"
-              text="Join India's premier philately platform — discover, collect & trade rare stamps."
+              title="Create account"
+              subtitle="Begin your philately journey today"
               cta="Sign Up"
-              onClick={() => setIsSignup(true)}
+              loading={loading}
+              showPw={showPw}
+              setShowPw={setShowPw}
+              onSubmit={(event) => submit(event, "signup")}
+              onForgotPassword={resetPassword}
+              onProviderLogin={signInWithProvider}
+              socialLoading={socialLoading}
+              status={status}
+              mode="signup"
             />
-          </div>
-        </div>
+
+            {/* Sliding overlay */}
+            <div className="overlay-container">
+              <div className="overlay">
+                <OverlayPanel
+                  side="left"
+                  title="Hello, Collector!"
+                  text="Already part of Stamp Safar? Sign in to access your collection, wishlist and trades."
+                  cta="Sign In"
+                  onClick={() => setIsSignup(false)}
+                />
+                <OverlayPanel
+                  side="right"
+                  title="New here?"
+                  text="Join India's premier philately platform — discover, collect & trade rare stamps."
+                  cta="Sign Up"
+                  onClick={() => setIsSignup(true)}
+                />
+              </div>
+            </div>
           </>
         )}
       </div>
@@ -652,11 +650,10 @@ function FormPanel({
 
         {panelStatus && (
           <div
-            className={`mt-3 rounded-xl border px-3 py-2 text-xs ${
-              panelStatus.type === "success"
+            className={`mt-3 rounded-xl border px-3 py-2 text-xs ${panelStatus.type === "success"
                 ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-700"
                 : "border-destructive/25 bg-destructive/10 text-destructive"
-            }`}
+              }`}
           >
             {panelStatus.text}
           </div>

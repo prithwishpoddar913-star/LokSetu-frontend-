@@ -203,7 +203,7 @@ function StampDetail() {
       </div>
 
       <section className="container mx-auto px-4 sm:px-6 pb-10">
-        <div className="grid gap-8 lg:grid-cols-[minmax(340px,480px)_1fr]">
+        <div className="grid gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-[minmax(340px,480px)_1fr]">
           <div className="lg:sticky lg:top-24 h-fit">
             <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
               <div className="aspect-square rounded-xl bg-secondary/60 grid place-items-center p-7">

@@ -132,7 +132,13 @@ function AuthPage() {
         window.localStorage.setItem(REGISTRATION_STORAGE_KEY, "true");
 
         if (result.session) {
-          window.setTimeout(() => navigate({ to: "/dashboard" }), 600);
+          const redirectPath = window.sessionStorage.getItem("stampSafar.redirectAfterLogin");
+          if (redirectPath) {
+            window.sessionStorage.removeItem("stampSafar.redirectAfterLogin");
+            window.setTimeout(() => navigate({ to: redirectPath as any }), 600);
+          } else {
+            window.setTimeout(() => navigate({ to: "/dashboard" }), 600);
+          }
         } else {
           window.setTimeout(() => setIsSignup(false), 900);
         }
@@ -153,7 +159,13 @@ function AuthPage() {
 
         setStatus({ type: "success", text: result.message });
         window.localStorage.setItem(REGISTRATION_STORAGE_KEY, "true");
-        window.setTimeout(() => navigate({ to: "/dashboard" }), 500);
+        const redirectPath = window.sessionStorage.getItem("stampSafar.redirectAfterLogin");
+        if (redirectPath) {
+          window.sessionStorage.removeItem("stampSafar.redirectAfterLogin");
+          window.setTimeout(() => navigate({ to: redirectPath as any }), 500);
+        } else {
+          window.setTimeout(() => navigate({ to: "/dashboard" }), 500);
+        }
       }
     } catch (error) {
       setStatus({
@@ -179,10 +191,11 @@ function AuthPage() {
     }
 
     try {
+      const redirectPath = window.sessionStorage.getItem("stampSafar.redirectAfterLogin") || "/dashboard";
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}${redirectPath.startsWith("/") ? redirectPath : "/" + redirectPath}`,
         },
       });
 

@@ -216,7 +216,7 @@ export const guides: Guide[] = [
     experience: '8 years',
     description: 'Government-certified heritage guide specializing in Kolkata\'s colonial architecture, Durga Puja pandal hopping, and Bengali cultural experiences. Expert in philatelic tours of India Post offices.',
     contactInfo: 'Demo contact — enquiry via platform',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+    image: '',
     isDemoData: true,
   },
   {

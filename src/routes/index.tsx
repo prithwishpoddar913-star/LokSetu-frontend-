@@ -260,8 +260,8 @@ function Home() {
             <source src={bgVideo} type="video/mp4" />
           </video>
 
-          {/* DARK OVERLAY */}
-          <div className="absolute inset-0 bg-black/60"></div>
+          {/* DARK OVERLAY (Ensures contrast in both Dark and Light modes) */}
+          <div className="absolute inset-0 bg-neutral-950/75 dark:bg-black/60 backdrop-blur-[1px]"></div>
         </div>
 
         {/* ANIMATED BLOBS */}

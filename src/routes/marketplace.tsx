@@ -66,9 +66,9 @@ function Marketplace() {
 
       {/* HERO */}
       <section className="container mx-auto px-4 sm:px-6 pt-10">
-        <div className="rounded-3xl border border-white/10 bg-black/40 backdrop-blur-md p-8 lg:p-10 flex flex-col lg:flex-row gap-6 items-start lg:items-center">
+        <div className="rounded-3xl border border-white/20 dark:border-white/10 bg-black/50 dark:bg-black/40 backdrop-blur-md p-8 lg:p-10 flex flex-col lg:flex-row gap-6 items-start lg:items-center">
           <div className="flex-1">
-            <Badge className="bg-gold/20 text-gold border border-gold/40 hover:bg-gold/25">
+            <Badge className="bg-amber-400/20 text-amber-300 border border-amber-400/40">
               Marketplace
             </Badge>
 
@@ -76,7 +76,7 @@ function Marketplace() {
               Buy verified stamps from trusted collectors
             </h1>
 
-            <p className="text-gray-300 mt-2 max-w-xl">
+            <p className="text-zinc-200 mt-2 max-w-xl">
               Every listing is reviewed by our expert panel.
             </p>
           </div>
@@ -84,7 +84,7 @@ function Marketplace() {
           <Button
             asChild
             size="lg"
-            className="gap-2 bg-gold text-black hover:bg-gold/90"
+            className="gap-2 bg-[#F47721] text-white hover:bg-[#E85D04] font-semibold shadow-md"
           >
             <Link to="/sell">
               <Upload className="h-4 w-4" />
@@ -96,7 +96,7 @@ function Marketplace() {
 
       {/* LISTINGS */}
       <section className="container mx-auto px-4 sm:px-6 py-10">
-        <h2 className="text-2xl font-semibold mb-6 text-white">
+        <h2 className="text-2xl font-semibold mb-6 text-foreground">
           Live Listings
         </h2>
 
@@ -115,10 +115,10 @@ function MarketplaceCard({ s, addToCart }: { s: Stamp; addToCart: (s: Stamp) => 
 
   return (
     <article
-      className="p-4 flex gap-4 group rounded-3xl border border-white/10 bg-black/40 backdrop-blur-md"
+      className="p-4 flex gap-4 group rounded-3xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow"
     >
       {/* IMAGE */}
-      <div className="w-28 sm:w-32 shrink-0 aspect-[4/5] bg-secondary/20 rounded-lg grid place-items-center p-2 relative">
+      <div className="w-28 sm:w-32 shrink-0 aspect-[4/5] bg-secondary/30 rounded-lg grid place-items-center p-2 relative">
         {!available && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 rounded-lg">
             <span className="bg-red-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
@@ -138,39 +138,39 @@ function MarketplaceCard({ s, addToCart }: { s: Stamp; addToCart: (s: Stamp) => 
 
       {/* INFO */}
       <div className="flex-1 flex flex-col">
-        <div className="flex justify-between">
-          <h3 className="text-white font-semibold">{s.name}</h3>
+        <div className="flex justify-between items-start gap-2">
+          <h3 className="text-foreground font-semibold line-clamp-1">{s.name}</h3>
 
-          <Badge variant="outline" className="text-[10px] border-white/20 text-white">
+          <Badge variant="outline" className="text-[10px] shrink-0">
             {s.rarity}
           </Badge>
         </div>
 
-        <p className="text-xs text-gray-300 mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           {s.year} · {s.category}
         </p>
 
-        <div className="mt-auto pt-3 flex justify-between">
+        <div className="mt-auto pt-3 flex justify-between items-end">
           <div>
-            <div className="text-xs text-gray-200">{s.seller!.name}</div>
+            <div className="text-xs text-foreground font-medium">{s.seller!.name}</div>
 
-            <div className="flex gap-2 text-xs text-gray-400">
-              <span className="flex items-center gap-1">
-                <Star className="w-3 h-3 text-gold" />
+            <div className="flex gap-2 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
+                <Star className="w-3 h-3 fill-current" />
                 {s.seller!.rating}
               </span>
 
               <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3" />
+                <MapPin className="w-3 h-3 text-[#F47721]" />
                 {s.seller!.location}
               </span>
             </div>
           </div>
 
           <div className="text-right">
-            <div className="text-white font-semibold">₹{s.price.toLocaleString("en-IN")}</div>
+            <div className="text-foreground font-bold">₹{s.price.toLocaleString("en-IN")}</div>
 
-            <div className={`text-[10px] ${available ? "text-emerald-400" : "text-red-400"}`}>
+            <div className={`text-[10px] font-medium ${available ? "text-emerald-600 dark:text-emerald-400" : "text-red-500"}`}>
               {available ? "● Available" : "● Sold Out"}
             </div>
           </div>
@@ -182,7 +182,7 @@ function MarketplaceCard({ s, addToCart }: { s: Stamp; addToCart: (s: Stamp) => 
             asChild
             size="sm"
             variant="outline"
-            className="border-white/20 bg-black/20 text-white hover:bg-white/10"
+            className="border-border hover:bg-muted text-foreground"
           >
             <Link to="/stamps/$stampId" params={{ stampId: s.id }}>
               Details
@@ -195,8 +195,8 @@ function MarketplaceCard({ s, addToCart }: { s: Stamp; addToCart: (s: Stamp) => 
             disabled={!available}
             className={`gap-1 ${
               available
-                ? "bg-gold text-black hover:bg-gold/90"
-                : "bg-gray-600 text-gray-300 cursor-not-allowed"
+                ? "bg-[#F47721] text-white hover:bg-[#E85D04]"
+                : "bg-muted text-muted-foreground cursor-not-allowed"
             }`}
             onClick={() => {
               if (available) addToCart(s);

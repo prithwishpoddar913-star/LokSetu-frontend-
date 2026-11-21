@@ -19,7 +19,9 @@ import {
   Clock,
   Loader2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -213,23 +215,45 @@ function BuyStampPage() {
   // 2. Load Leaflet Map and handle coordinates / geocoding / delivery rules
   useEffect(() => {
     let isMounted = true;
-    let mapInstance: any = null;
+    let mapInstance: L.Map | null = null;
 
-    const initMap = () => {
-      const L = (window as any).L;
-      if (!L) return;
+    // Fix default marker icon issues with Vite bundling
+    const DefaultIcon = L.icon({
+      iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+      iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+      shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    });
+    L.Marker.prototype.options.icon = DefaultIcon;
 
+    const timer = setTimeout(() => {
       const mapContainer = document.getElementById("leaflet-delivery-map");
-      if (!mapContainer) return;
+      if (!mapContainer || !isMounted) return;
 
-      const initialCoords = [latitude, longitude];
-      mapInstance = L.map("leaflet-delivery-map").setView(initialCoords, 11);
+      // Ensure container is empty and not already initialized
+      if ((mapContainer as any)._leaflet_id) {
+        return;
+      }
+
+      const initialCoords: [number, number] = [latitude, longitude];
+      mapInstance = L.map(mapContainer).setView(initialCoords, 11);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
       }).addTo(mapInstance);
 
       let marker = L.marker(initialCoords, { draggable: true }).addTo(mapInstance);
+
+      // Invalidate size once rendered in DOM
+      setTimeout(() => {
+        if (mapInstance && isMounted) {
+          mapInstance.invalidateSize();
+        }
+      }, 250);
 
       const updateLocationDetails = async (lat: number, lng: number) => {
         if (!isMounted) return;
@@ -263,7 +287,7 @@ function BuyStampPage() {
         }
       };
 
-      mapInstance.on("click", (e: any) => {
+      mapInstance.on("click", (e: L.LeafletMouseEvent) => {
         const { lat, lng } = e.latlng;
         marker.setLatLng([lat, lng]);
         updateLocationDetails(lat, lng);
@@ -273,40 +297,17 @@ function BuyStampPage() {
         const position = marker.getLatLng();
         updateLocationDetails(position.lat, position.lng);
       });
-    };
-
-    const loadLeaflet = () => {
-      if ((window as any).L) {
-        initMap();
-        return;
-      }
-
-      if (!document.getElementById("leaflet-css")) {
-        const link = document.createElement("link");
-        link.id = "leaflet-css";
-        link.rel = "stylesheet";
-        link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-        document.head.appendChild(link);
-      }
-
-      const script = document.createElement("script");
-      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-      script.async = true;
-      script.onload = () => {
-        if (isMounted) initMap();
-      };
-      document.body.appendChild(script);
-    };
-
-    loadLeaflet();
+    }, 100);
 
     return () => {
       isMounted = false;
+      clearTimeout(timer);
       if (mapInstance) {
         mapInstance.remove();
+        mapInstance = null;
       }
     };
-  }, []);
+  }, [authChecking]);
 
   // 3. Polling mechanism for optional UPI Collect Request flow
   useEffect(() => {
@@ -950,8 +951,8 @@ function BuyStampPage() {
                   <span key={step} className="flex items-center gap-1 min-w-0">
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full ${idx === 0
-                          ? "bg-emerald-500 text-white font-semibold"
-                          : "bg-border text-muted-foreground"
+                        ? "bg-emerald-500 text-white font-semibold"
+                        : "bg-border text-muted-foreground"
                         }`}
                     >
                       {step}
@@ -1158,8 +1159,8 @@ function BuyStampPage() {
                         setUtrError("");
                       }}
                       className={`flex items-center gap-3 rounded-xl border p-3 text-left transition ${active
-                          ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-                          : "border-border bg-secondary/20 hover:border-primary/50"
+                        ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                        : "border-border bg-secondary/20 hover:border-primary/50"
                         }`}
                     >
                       <span
@@ -1174,8 +1175,8 @@ function BuyStampPage() {
                       </span>
                       <span
                         className={`h-4 w-4 shrink-0 rounded-full border ${active
-                            ? "border-primary bg-primary shadow-[inset_0_0_0_3px_white]"
-                            : "border-border"
+                          ? "border-primary bg-primary shadow-[inset_0_0_0_3px_white]"
+                          : "border-border"
                           }`}
                       />
                     </button>

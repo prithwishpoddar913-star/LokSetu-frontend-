@@ -8,12 +8,12 @@ export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
       {
-        title: "Terms of Service & Community Guidelines — Stamp Safar",
+        title: "Terms of Service & Community Guidelines — LokSetu",
       },
       {
         name: "description",
         content:
-          "Terms of Service, Fair-Trade 90% community remittance charter, authentic craft pledge, and guest hospitality standards for Stamp Safar.",
+          "Terms of Service, Fair-Trade 90% community remittance charter, authentic craft pledge, and guest hospitality standards for LokSetu.",
       },
     ],
   }),
@@ -46,7 +46,7 @@ function TermsOfServicePage() {
               The Fair-Trade Charter
             </h3>
             <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 m-0">
-              By accessing Stamp Safar, buying handcrafted items, or booking certified community guides and homestays, you actively support our verified 90% direct payout model that revitalizes rural economies across West Bengal, Bihar, and Jharkhand.
+              By accessing LokSetu, buying handcrafted items, or booking certified community guides and homestays, you actively support our verified 90% direct payout model that revitalizes rural economies across West Bengal, Bihar, and Jharkhand.
             </p>
           </div>
 
@@ -59,7 +59,7 @@ function TermsOfServicePage() {
                 <strong>90% Direct Remittance:</strong> For all handicraft sales, homestay accommodations, and guided walking tours, exactly 90% of the customer order price is transferred directly to the verified artisan or host.
               </li>
               <li>
-                <strong>10% Platform Operation:</strong> Stamp Safar retains 10% strictly to defray payment gateway fees, cloud server hosting, SMS dispatch, and physical inspection verifications. No hidden markups or predatory commissions are applied.
+                <strong>10% Platform Operation:</strong> LokSetu retains 10% strictly to defray payment gateway fees, cloud server hosting, SMS dispatch, and physical inspection verifications. No hidden markups or predatory commissions are applied.
               </li>
             </ul>
           </div>
@@ -69,7 +69,7 @@ function TermsOfServicePage() {
               2. Authentic Handicraft Guarantee & Anti-Counterfeit Pledge
             </h2>
             <p>
-              Every artisan onboarded on Stamp Safar signs a solemn pledge that items listed (Bishnupur Terracotta, Dokra bell metal, Bolpur Kantha, Madhubani folk paintings, Manjusha art, etc.) are authentic, hand-crafted products originating from indigenous artisans.
+              Every artisan onboarded on LokSetu signs a solemn pledge that items listed (Bishnupur Terracotta, Dokra bell metal, Bolpur Kantha, Madhubani folk paintings, Manjusha art, etc.) are authentic, hand-crafted products originating from indigenous artisans.
             </p>
             <p>
               Listing machine-replicated polymer casts or factory copies under the guise of indigenous crafts results in immediate disqualification, forfeiture of verified status, and delisting from the network.
@@ -81,7 +81,7 @@ function TermsOfServicePage() {
               3. Philatelic Stamp Condition & Historical Verification
             </h2>
             <p>
-              All postage stamps and philatelic first day covers listed on Stamp Safar are verified for authenticity, perforation integrity, and catalog condition (Mint Never Hinged, Fine Used, or Lightly Hinged). Clear archival high-resolution scans are provided for individual collectible issues.
+              All postage stamps and philatelic first day covers listed on LokSetu are verified for authenticity, perforation integrity, and catalog condition (Mint Never Hinged, Fine Used, or Lightly Hinged). Clear archival high-resolution scans are provided for individual collectible issues.
             </p>
           </div>
 
@@ -99,7 +99,7 @@ function TermsOfServicePage() {
               5. Governing Law & Jurisdiction
             </h2>
             <p>
-              These Terms are governed by and construed in accordance with the laws of the Republic of India. Any legal dispute or proceeding arising out of or related to Stamp Safar shall be subject to the exclusive jurisdiction of the competent courts in Kolkata, West Bengal.
+              These Terms are governed by and construed in accordance with the laws of the Republic of India. Any legal dispute or proceeding arising out of or related to LokSetu shall be subject to the exclusive jurisdiction of the competent courts in Kolkata, West Bengal.
             </p>
           </div>
         </div>

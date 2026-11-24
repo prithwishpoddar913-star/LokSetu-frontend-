@@ -41,10 +41,10 @@ const conditions = ["Mint never hinged", "Mint hinged", "Fine used", "Very fine 
 export const Route = createFileRoute("/sell")({
   head: () => ({
     meta: [
-      { title: "Sell Your Stamp — Stamp Safar" },
+      { title: "Sell Your Stamp — LokSetu" },
       {
         name: "description",
-        content: "List your stamp for review and sell it to collectors on Stamp Safar.",
+        content: "List your stamp for review and sell it to collectors on LokSetu.",
       },
     ],
   }),
@@ -191,7 +191,7 @@ function SellStampPage() {
 
             <h1 className="mt-3 text-3xl font-semibold">Sell your stamp</h1>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              Add stamp photo, condition and price. Stamp Safar will review authenticity before it
+              Add stamp photo, condition and price. LokSetu will review authenticity before it
               appears in the marketplace.
             </p>
 
@@ -347,7 +347,7 @@ function SellStampPage() {
               {[
                 "Clear front photo improves approval chances.",
                 "Mention condition honestly for better buyer trust.",
-                "Stamp Safar reviews before marketplace publishing.",
+                "LokSetu reviews before marketplace publishing.",
               ].map((item) => (
                 <div key={item} className="flex gap-2">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />

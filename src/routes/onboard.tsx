@@ -33,7 +33,7 @@ export const Route = createFileRoute("/onboard")({
   head: () => ({
     meta: [
       {
-        title: "Community Onboarding — Join Stamp Safar | SFIC East",
+        title: "Community Onboarding — Join LokSetu | SFIC East",
       },
       {
         name: "description",
@@ -261,7 +261,7 @@ function CommunityOnboardPage() {
             Empowering Rural Livelihoods · Seva First Initiative
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#252525] dark:text-white tracking-tight">
-            Join the <span className="text-[#F47721]">Stamp Safar</span> Community
+            Join the <span className="text-[#F47721]">LokSetu</span> Community
           </h1>
           <p className="mt-3 text-base text-[#777777] dark:text-neutral-400 max-w-2xl mx-auto">
             Directly connect your traditional handicrafts, guiding services, or rural homestay with cultural travelers.
@@ -284,7 +284,7 @@ function CommunityOnboardPage() {
             </Badge>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#252525] dark:text-white">
-              Dhonyobad! Welcome to Stamp Safar
+              Dhonyobad! Welcome to LokSetu
             </h2>
             <p className="mt-2 text-sm sm:text-base text-[#777777] dark:text-neutral-300 max-w-lg mx-auto">
               Your onboarding application as an <strong>{role === "artisan" ? "Artisan" : role === "guide" ? "Heritage Guide" : "Homestay Host"}</strong> has been received by our community verification desk.
@@ -312,7 +312,7 @@ function CommunityOnboardPage() {
                   <strong>Verification Call:</strong> Our district coordinator will reach out to <strong>{phone}</strong> within 24 to 48 hours to confirm your details.
                 </li>
                 <li>
-                  <strong>Digital Storefront:</strong> Once verified, your listings will automatically appear on the Stamp Safar marketplace with a verified artisan badge.
+                  <strong>Digital Storefront:</strong> Once verified, your listings will automatically appear on the LokSetu marketplace with a verified artisan badge.
                 </li>
                 <li>
                   <strong>Direct Payouts:</strong> 90% of all future orders and bookings will be credited directly to your registered UPI / account.
@@ -755,7 +755,7 @@ function CommunityOnboardPage() {
                     Step 4: Fair-Trade Agreement & Heritage Pledge
                   </h2>
                   <p className="text-xs text-[#777777] dark:text-neutral-400 mt-1">
-                    Stamp Safar is built on ethics, authenticity, and non-exploitative community tourism.
+                    LokSetu is built on ethics, authenticity, and non-exploitative community tourism.
                   </p>
                 </div>
 
@@ -764,7 +764,7 @@ function CommunityOnboardPage() {
                     <HeartHandshake className="w-5 h-5 text-[#F47721] shrink-0 mt-0.5" />
                     <div className="text-xs space-y-2 text-neutral-700 dark:text-neutral-300">
                       <p>
-                        <strong>1. 90% Direct Remittance:</strong> I understand that 90% of every sale or booking goes directly to my bank/UPI, while Stamp Safar retains 10% strictly for technical maintenance, gateway fees, and quality verification.
+                        <strong>1. 90% Direct Remittance:</strong> I understand that 90% of every sale or booking goes directly to my bank/UPI, while LokSetu retains 10% strictly for technical maintenance, gateway fees, and quality verification.
                       </p>
                       <p>
                         <strong>2. Authentic Cultural Heritage:</strong> I pledge that all products and guiding services offered are authentic, traditionally handmade or indigenous, free from synthetic factory mass copies.
@@ -784,7 +784,7 @@ function CommunityOnboardPage() {
                     className="mt-1 rounded text-[#F47721] focus:ring-[#F47721] h-4 w-4"
                   />
                   <span className="text-xs font-semibold text-[#252525] dark:text-neutral-200">
-                    I confirm that the details provided are accurate and I agree to the Stamp Safar Fair-Trade Terms and Community Code of Conduct.
+                    I confirm that the details provided are accurate and I agree to the LokSetu Fair-Trade Terms and Community Code of Conduct.
                   </span>
                 </label>
 

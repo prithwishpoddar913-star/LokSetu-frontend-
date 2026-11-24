@@ -50,7 +50,7 @@ export const Route = createFileRoute("/explore/$stateSlug")({
     const stateName = stateData?.name ?? "Destinations";
     return {
       meta: [
-        { title: `${stateName} — Explore India | Stamp Safar` },
+        { title: `${stateName} — Explore India | LokSetu` },
         {
           name: "description",
           content: `Explore heritage destinations, postage stamps, handicrafts, homestays, and tour guides in ${stateName}.`,

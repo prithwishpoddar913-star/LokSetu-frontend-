@@ -261,15 +261,15 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-[#F47721]/40 bg-white dark:bg-zinc-800 shadow-sm transition-transform duration-300 group-hover:scale-105">
               <img
                 src={brandLogo}
-                alt="Stamp Safar logo"
+                alt="LokSetu logo"
                 className="h-full w-full object-cover"
                 width={40}
                 height={40}
               />
             </div>
             <div className="leading-tight">
-              <div className="font-bold text-base text-[#252525] dark:text-zinc-100">
-                Stamp <span className="text-[#F47721]">Safar</span>
+              <div className="font-bold text-base">
+                <span className="text-[#F47721]">Lok</span><span className="text-[#252525] dark:text-white">Setu</span>
               </div>
               <div className="text-[9px] uppercase tracking-[0.18em] text-[#777777] dark:text-zinc-400">
                 SFIC East · Heritage
@@ -325,7 +325,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 type="button"
                 onClick={handleInstallClick}
                 className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#F47721]/40 bg-[#FFF0E5] dark:bg-[#F47721]/15 text-[#F47721] text-xs font-semibold hover:bg-[#F47721] hover:text-white transition"
-                aria-label="Install Stamp Safar App"
+                aria-label="Install LokSetu App"
               >
                 <DownloadCloud className="w-3.5 h-3.5" />
                 <span>{t("common.installApp", "Install App")}</span>
@@ -539,7 +539,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-[#F47721] font-semibold hover:bg-[#FFF0E5] dark:hover:bg-[#F47721]/15"
                 >
                   <DownloadCloud className="h-4 w-4" />
-                  {t("common.installApp", "Install Stamp Safar App")}
+                  {t("common.installApp", "Install LokSetu App")}
                 </button>
               )}
               <button
@@ -800,14 +800,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <div className="h-9 w-9 overflow-hidden rounded-full border border-[#F47721]/40 bg-white dark:bg-zinc-800">
                 <img
                   src={brandLogo}
-                  alt="Stamp Safar logo"
+                  alt="LokSetu logo"
                   className="h-full w-full object-cover"
                   width={36}
                   height={36}
                 />
               </div>
-              <span className="font-bold text-lg text-[#252525] dark:text-zinc-100">
-                Stamp <span className="text-[#F47721]">Safar</span>
+              <span className="font-bold text-lg">
+                <span className="text-[#F47721]">Lok</span><span className="text-[#252525] dark:text-white">Setu</span>
               </span>
             </div>
             <p className="text-xs text-[#777777] dark:text-zinc-400 leading-relaxed mb-3">
@@ -944,7 +944,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         {/* Bottom Bar */}
         <div className="border-t border-[#F1D8C5] dark:border-white/10">
           <div className="container mx-auto px-4 sm:px-6 py-4 text-xs text-[#777777] dark:text-zinc-400 flex flex-wrap justify-between items-center gap-2">
-            <span>© {new Date().getFullYear()} Stamp Safar. Developed for Seva First Innovation Challenge (SFIC East).</span>
+            <span>© {new Date().getFullYear()} LokSetu. Developed for Seva First Innovation Challenge (SFIC East).</span>
             <div className="flex items-center gap-4 text-xs">
               <Link to="/about" className="hover:text-[#F47721]">Impact Story</Link>
               <Link to="/impact" className="hover:text-[#F47721]">Public Dashboard</Link>

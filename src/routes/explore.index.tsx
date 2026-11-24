@@ -6,7 +6,7 @@ import { statesData } from "@/lib/states";
 export const Route = createFileRoute("/explore/")({
   head: () => ({
     meta: [
-      { title: "Explore India — Stamp Safar" },
+      { title: "Explore India — LokSetu" },
       {
         name: "description",
         content:

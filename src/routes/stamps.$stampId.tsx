@@ -73,7 +73,7 @@ export const Route = createFileRoute("/stamps/$stampId")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.stamp.name} (${loaderData?.stamp.year}) — Stamp Safar` },
+      { title: `${loaderData?.stamp.name} (${loaderData?.stamp.year}) — LokSetu` },
       { name: "description", content: loaderData?.stamp.description ?? "Stamp detail" },
       { property: "og:title", content: loaderData?.stamp.name },
       { property: "og:description", content: loaderData?.stamp.description },
@@ -391,7 +391,7 @@ function StampDetail() {
                     <p className="text-muted-foreground leading-relaxed">{stamp.description}</p>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <Info icon={ShieldCheck} label="Authenticity" value="Stamp Safar Expert Panel" />
+                    <Info icon={ShieldCheck} label="Authenticity" value="LokSetu Expert Panel" />
                     <Info icon={MapPin} label="Origin" value={stamp.origin} />
                     <Info icon={PackageCheck} label="Stock" value={`${stamp.stock} available`} />
                     <Info icon={Truck} label="Dispatch" value="Secure archival packing" />

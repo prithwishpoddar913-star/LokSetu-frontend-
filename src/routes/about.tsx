@@ -29,16 +29,16 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       {
-        title: "About & Impact Story — Stamp Safar | SFIC East",
+        title: "About & Impact Story — LokSetu | SFIC East",
       },
       {
         name: "description",
         content:
-          "Discover how Stamp Safar transforms postage stamps into tourism and rural livelihoods for traditional artisans and homestay hosts across West Bengal, Bihar, and Jharkhand.",
+          "Discover how LokSetu transforms postage stamps into tourism and rural livelihoods for traditional artisans and homestay hosts across West Bengal, Bihar, and Jharkhand.",
       },
       {
         property: "og:title",
-        content: "Stamp Safar — From Stamps to Destinations, From Heritage to Livelihood",
+        content: "LokSetu — From Stamps to Destinations, From Heritage to Livelihood",
       },
       {
         property: "og:description",
@@ -136,7 +136,7 @@ function AboutPage() {
               The 4-Step Cultural Livelihood Bridge
             </h2>
             <p className="mt-3 text-sm text-[#777777] dark:text-zinc-400">
-              How Stamp Safar transforms a collectible stamp into income for an artisan family.
+              How LokSetu transforms a collectible stamp into income for an artisan family.
             </p>
           </div>
 
@@ -234,7 +234,7 @@ function AboutPage() {
                 Sustainability &amp; Fair-Trade Economics
               </h2>
               <p className="text-sm text-[#777777] dark:text-zinc-300 leading-relaxed mb-4">
-                To guarantee longevity beyond the hackathon, Stamp Safar implements a transparent, self-sustaining financial framework:
+                To guarantee longevity beyond the hackathon, LokSetu implements a transparent, self-sustaining financial framework:
               </p>
               <div className="space-y-3 text-xs sm:text-sm text-[#777777] dark:text-zinc-300">
                 <div className="flex gap-2.5">

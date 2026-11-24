@@ -85,7 +85,7 @@ export const Route = createFileRoute("/stamps/$stampId/buy")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `Buy ${loaderData?.stamp.name} — Stamp Safar` },
+      { title: `Buy ${loaderData?.stamp.name} — LokSetu` },
       { name: "description", content: `Buy ${loaderData?.stamp.name} from verified sellers.` },
     ],
   }),
@@ -588,7 +588,7 @@ function BuyStampPage() {
           key: clientKeyId,
           amount: finalAmountInPaise,
           currency: "INR",
-          name: "Stamp Safar",
+          name: "LokSetu",
           description: `Buy ${stamp.name}`,
           image: stamp.image,
           prefill: {
@@ -1210,7 +1210,7 @@ function BuyStampPage() {
                   <div className="flex justify-center my-2">
                     <img
                       src={qrCodeUrl}
-                      alt="Stamp Safar UPI QR Code"
+                      alt="LokSetu UPI QR Code"
                       className="h-44 w-44 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white p-2 shadow-inner object-contain"
                     />
                   </div>

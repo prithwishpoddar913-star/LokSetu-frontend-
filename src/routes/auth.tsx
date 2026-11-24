@@ -11,8 +11,8 @@ const authBackground = "/auth-stamps-bg.jpeg";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Stamp Safar" },
-      { name: "description", content: "Sign in or create an account on Stamp Safar." },
+      { title: "Sign in — LokSetu" },
+      { name: "description", content: "Sign in or create an account on LokSetu." },
     ],
   }),
   component: AuthPage,
@@ -55,7 +55,7 @@ function AuthPage() {
       setRecoveryMode(true);
       setStatus({
         type: "success",
-        text: "Email verified. Enter a new password for your Stamp Safar account.",
+        text: "Email verified. Enter a new password for your LokSetu account.",
       });
     }
 
@@ -67,7 +67,7 @@ function AuthPage() {
         setRecoveryMode(true);
         setStatus({
           type: "success",
-          text: "Email verified. Enter a new password for your Stamp Safar account.",
+          text: "Email verified. Enter a new password for your LokSetu account.",
         });
       }
     });
@@ -326,14 +326,14 @@ function AuthPage() {
                 <div className="mx-auto mb-3 h-16 w-16 overflow-hidden rounded-full border border-gold/50 bg-card shadow-soft">
                   <img
                     src={brandLogo}
-                    alt="Stamp Safar logo"
+                    alt="LokSetu logo"
                     className="h-full w-full object-cover"
                     width={64}
                     height={64}
                   />
                 </div>
                 <div className="mb-1 font-display text-lg font-semibold">
-                  Stamp <span className="gold-gradient-text">Safar</span>
+                  <span className="text-[#F47721]">Lok</span><span className="text-white dark:text-white">Setu</span>
                 </div>
                 <h2 className="text-2xl font-display font-semibold">Set new password</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -389,7 +389,7 @@ function AuthPage() {
             <FormPanel
               side="left"
               title="Welcome back"
-              subtitle="Sign in to your Stamp Safar account"
+              subtitle="Sign in to your LokSetu account"
               cta="Sign In"
               loading={loading}
               showPw={showPw}
@@ -425,7 +425,7 @@ function AuthPage() {
                 <OverlayPanel
                   side="left"
                   title="Hello, Collector!"
-                  text="Already part of Stamp Safar? Sign in to access your collection, wishlist and trades."
+                  text="Already part of LokSetu? Sign in to access your collection, wishlist and trades."
                   cta="Sign In"
                   onClick={() => setIsSignup(false)}
                 />
@@ -595,14 +595,14 @@ function FormPanel({
           <div className="mx-auto mb-3 h-16 w-16 overflow-hidden rounded-full border border-gold/50 bg-card shadow-soft">
             <img
               src={brandLogo}
-              alt="Stamp Safar logo"
+              alt="LokSetu logo"
               className="h-full w-full object-cover"
               width={64}
               height={64}
             />
           </div>
           <div className="mb-1 font-display text-lg font-semibold">
-            Stamp <span className="gold-gradient-text">Safar</span>
+            <span className="text-[#F47721]">Lok</span><span className="text-white dark:text-white">Setu</span>
           </div>
           <h2 className="text-3xl font-display font-semibold">{title}</h2>
           <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
@@ -843,13 +843,13 @@ function OverlayPanel({
       <div className="mb-6 h-24 w-24 overflow-hidden rounded-full border-4 border-primary-foreground/80 bg-white/90 shadow-xl">
         <img
           src={brandLogo}
-          alt="Stamp Safar logo"
+          alt="LokSetu logo"
           className="h-full w-full object-cover"
           width={96}
           height={96}
         />
       </div>
-      <div className="mb-2 font-display text-2xl font-semibold drop-shadow-sm">Stamp Safar</div>
+      <div className="mb-2 font-display text-2xl font-semibold drop-shadow-sm"><span className="text-[#F47721]">Lok</span><span className="text-white">Setu</span></div>
       <h2 className="text-4xl font-display font-semibold drop-shadow-sm">{title}</h2>
       <p className="mt-4 text-base leading-relaxed opacity-95 max-w-sm drop-shadow-sm">{text}</p>
       <button

@@ -8,12 +8,12 @@ export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
       {
-        title: "Privacy Policy & Zero-Tracking Charter — Stamp Safar",
+        title: "Privacy Policy & Zero-Tracking Charter — LokSetu",
       },
       {
         name: "description",
         content:
-          "Stamp Safar's privacy policy: Zero advertising trackers, no personal data selling, Do Not Track (DNT) compliance, and encrypted Supabase data storage.",
+          "LokSetu's privacy policy: Zero advertising trackers, no personal data selling, Do Not Track (DNT) compliance, and encrypted Supabase data storage.",
       },
     ],
   }),
@@ -47,7 +47,7 @@ function PrivacyPolicyPage() {
               Our Core Privacy Commitment
             </h3>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 m-0">
-              Stamp Safar does not sell, rent, or monetize personal user information. We operate on a zero third-party advertising model. We collect only what is strictly required to fulfill philatelic orders, confirm homestay bookings, and remit 90% direct payouts to rural artisans and guides.
+              LokSetu does not sell, rent, or monetize personal user information. We operate on a zero third-party advertising model. We collect only what is strictly required to fulfill philatelic orders, confirm homestay bookings, and remit 90% direct payouts to rural artisans and guides.
             </p>
           </div>
 
@@ -86,7 +86,7 @@ function PrivacyPolicyPage() {
               3. Payment Security & Bank Information
             </h2>
             <p>
-              Stamp Safar never stores full debit/credit card numbers or UPI MPINs on our servers.
+              LokSetu never stores full debit/credit card numbers or UPI MPINs on our servers.
               All payment transactions are handled through RBI-regulated payment gateways (Razorpay) or direct UPI dynamic QR deep-links using bank-grade 256-bit TLS encryption.
             </p>
           </div>

@@ -94,11 +94,11 @@ const getHomestayImages = (
 export const Route = createFileRoute("/homestays")({
   head: () => ({
     meta: [
-      { title: "Homestays & Local Experiences — Stamp Safar" },
+      { title: "Homestays & Local Experiences — LokSetu" },
       {
         name: "description",
         content:
-          "Stay with local families across West Bengal, Bihar, and Jharkhand. Experience authentic culture, traditional food, and genuine hospitality through Stamp Safar's homestay network.",
+          "Stay with local families across West Bengal, Bihar, and Jharkhand. Experience authentic culture, traditional food, and genuine hospitality through LokSetu's homestay network.",
       },
     ],
   }),
@@ -328,7 +328,7 @@ function HomestaysPage() {
               Host Travellers at Your Home
             </h2>
             <p className="text-[#777777] dark:text-zinc-300 mb-6 leading-relaxed text-sm sm:text-base">
-              Are you a local family in West Bengal, Bihar, or Jharkhand who can offer authentic hospitality? Join Stamp Safar's homestay network and earn a sustainable income while sharing your culture with the world.
+              Are you a local family in West Bengal, Bihar, or Jharkhand who can offer authentic hospitality? Join LokSetu's homestay network and earn a sustainable income while sharing your culture with the world.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link

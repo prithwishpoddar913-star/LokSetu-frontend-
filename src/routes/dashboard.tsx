@@ -52,7 +52,7 @@ import { addNotification } from "@/lib/notifications";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 export const Route = createFileRoute("/dashboard")({
-  head: () => ({ meta: [{ title: "My Dashboard — Stamp Safar" }] }),
+  head: () => ({ meta: [{ title: "My Dashboard — LokSetu" }] }),
   component: Dashboard,
 });
 
@@ -529,7 +529,7 @@ function Dashboard() {
 
   const downloadInvoice = (order: OrderItem) => {
     const invoice = [
-      "Stamp Safar Kiosk Invoice",
+      "LokSetu Kiosk Invoice",
       `========================`,
       `Order Reference: ${order.id}`,
       `Item Purchased: ${order.item}`,
@@ -541,7 +541,7 @@ function Dashboard() {
       `Geolocated lat: ${order.latitude || "N/A"}, lng: ${order.longitude || "N/A"}`,
       `Transaction Status: ${order.status}`,
       `========================`,
-      "Thank you for shopping with Stamp Safar!",
+      "Thank you for shopping with LokSetu!",
     ].join("\n");
 
     const blob = new Blob([invoice], { type: "text/plain" });
@@ -613,14 +613,14 @@ function Dashboard() {
           <div className="flex-1">
             <h1 className="text-2xl font-semibold">{displayName}</h1>
             <p className="text-sm text-muted-foreground">
-              {user?.email} · Stamp Safar Collector
+              {user?.email} · LokSetu Collector
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {isOwner ? (
                 <>
                   <Badge className="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-black border-none font-bold shadow-md shadow-amber-500/25 animate-pulse flex items-center gap-1.5 px-3 py-1">
                     <Crown className="w-3.5 h-3.5" />
-                    Stamp Safar Owner
+                    LokSetu Owner
                   </Badge>
                   <Badge variant="outline" className="border-amber-500/50 text-amber-500 flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3 text-amber-500" />

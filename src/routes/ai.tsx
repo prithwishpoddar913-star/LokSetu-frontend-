@@ -199,7 +199,7 @@ export async function aiServiceFn({ data }: { data: { prompt?: string; imageBase
 export const Route = createFileRoute("/ai")({
   head: () => ({
     meta: [
-      { title: "AI Tools — Scan, Recommend & Search · Stamp Safar" },
+      { title: "AI Tools — Scan, Recommend & Search · LokSetu" },
       {
         name: "description",
         content:
@@ -216,7 +216,7 @@ const SCAN_STEPS = [
   "Optimizing contrast and alignment for edge-detection...",
   "Analyzing stamp borders and perforation count...",
   "Running optical character recognition (OCR) on inscriptions...",
-  "Querying Stamp Safar historical archives for matches...",
+  "Querying LokSetu historical archives for matches...",
   "Synthesizing final classification parameters...",
 ];
 

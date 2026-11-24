@@ -31,8 +31,8 @@ import type { User as SupabaseUser } from "@supabase/supabase-js";
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Stamp Safar" },
-      { name: "description", content: "Manage account, theme and preferences on Stamp Safar." },
+      { title: "Settings — LokSetu" },
+      { name: "description", content: "Manage account, theme and preferences on LokSetu." },
     ],
   }),
   component: SettingsPage,

@@ -14,7 +14,7 @@ import { calculateCommunitySplit } from "@/lib/impact-config";
 export const Route = createFileRoute("/handicrafts")({
   head: () => ({
     meta: [
-      { title: "Local Handicrafts — Stamp Safar" },
+      { title: "Local Handicrafts — LokSetu" },
       {
         name: "description",
         content:

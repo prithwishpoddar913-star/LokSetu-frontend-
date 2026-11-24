@@ -1,5 +1,5 @@
 /**
- * Stamp Safar — Impact & Hackathon Configuration
+ * LokSetu — Impact & Hackathon Configuration
  * Seva First Innovation Challenge (SFIC East) - Eastern Zone (sficeast.wb.gov.in)
  * 
  * STRICT COMPLIANCE:
@@ -55,7 +55,7 @@ export const IMPACT_CONFIG = {
     secondaryEmail: "contact@stampsafar.in",
     helplinePhone: "+91 7980797454",
     alternatePhone: "+91 7980797454",
-    officeAddress: "Stamp Safar Initiative, Kolkata, West Bengal 700001, India",
+    officeAddress: "LokSetu Initiative, Kolkata, West Bengal 700001, India",
     workingHours: "Monday to Saturday, 10:00 AM – 6:00 PM IST",
     grievanceOfficer: "Prithwish Poddar (Project Lead & Grievance Redressal)",
   },

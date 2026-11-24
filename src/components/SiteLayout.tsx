@@ -69,7 +69,7 @@ const navLinks = [
   { to: "/dashboard", labelKey: "nav.dashboard", fallback: "Dashboard" },
 ] as const;
 
-const brandLogo = "/stamp-safar-logo.jpeg";
+import brandLogo from "@/assets/loksetu-logo.jpg";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();

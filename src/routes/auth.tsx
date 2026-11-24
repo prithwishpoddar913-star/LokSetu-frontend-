@@ -5,7 +5,7 @@ import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { loginUserFn, resetPasswordFn, signupUserFn } from "@/lib/auth-actions";
 
 const REGISTRATION_STORAGE_KEY = "stampSafar.registrationStarted";
-const brandLogo = "/stamp-safar-logo.jpeg";
+import brandLogo from "@/assets/loksetu-logo.jpg";
 const authBackground = "/auth-stamps-bg.jpeg";
 
 export const Route = createFileRoute("/auth")({

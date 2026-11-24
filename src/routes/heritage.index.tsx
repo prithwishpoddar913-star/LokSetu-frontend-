@@ -9,7 +9,7 @@ import { getDestinationAsset } from "@/lib/assets";
 export const Route = createFileRoute("/heritage/")({
   head: () => ({
     meta: [
-      { title: "Heritage Explorer — Stamp Safar" },
+      { title: "Heritage Explorer — LokSetu" },
       {
         name: "description",
         content:

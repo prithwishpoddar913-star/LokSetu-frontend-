@@ -32,7 +32,7 @@ export const Route = createFileRoute("/stamps")({
   head: () => ({
     meta: [
       {
-        title: "Explore Stamps — Stamp Safar",
+        title: "Explore Stamps — LokSetu",
       },
       {
         name: "description",

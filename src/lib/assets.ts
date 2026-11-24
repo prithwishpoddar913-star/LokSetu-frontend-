@@ -1,5 +1,5 @@
 /**
- * Shared Asset Auto-Match & Safe Fallback Engine for Stamp Safar
+ * Shared Asset Auto-Match & Safe Fallback Engine for LokSetu
  * Matches local assets in src/assets by normalized key against names/IDs
  * Handles homestays, destinations, handicrafts, guides, and stamps.
  */

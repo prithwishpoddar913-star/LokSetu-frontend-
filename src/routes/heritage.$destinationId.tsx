@@ -39,7 +39,7 @@ export const Route = createFileRoute("/heritage/$destinationId")({
     const dest = getDestinationById(params.destinationId);
     return {
       meta: [
-        { title: dest ? `${dest.name} — Heritage Explorer | Stamp Safar` : "Destination | Stamp Safar" },
+        { title: dest ? `${dest.name} — Heritage Explorer | LokSetu` : "Destination | LokSetu" },
         {
           name: "description",
           content: dest?.description ?? "Explore India's heritage destinations through stamps.",
@@ -616,7 +616,7 @@ function DestinationDetailPage() {
                   {copied ? "Copied!" : "Copy Link"}
                 </button>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`Discover ${d.name} on Stamp Safar: ${pageUrl}`)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(`Discover ${d.name} on LokSetu: ${pageUrl}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-[#25D366]/10 border border-[#25D366]/30 text-xs font-medium text-[#128C7E] dark:text-[#25D366] hover:bg-[#25D366]/20 transition-colors"

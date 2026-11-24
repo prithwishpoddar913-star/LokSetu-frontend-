@@ -64,7 +64,7 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Stamp Safar — From Stamps to Destinations, From Heritage to Livelihood",
+          "LokSetu — From Stamps to Destinations, From Heritage to Livelihood",
       },
       {
         name: "description",
@@ -552,7 +552,7 @@ function Home() {
               {t("storytelling.badge", "Seva First Innovation Challenge — Eastern Zone")}
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#252525] dark:text-zinc-100 tracking-tight">
-              {t("storytelling.title", "Why Stamp Safar?")}
+              {t("storytelling.title", "Why LokSetu?")}
             </h2>
             <p className="mt-3 text-sm sm:text-base text-[#777777] dark:text-zinc-400 leading-relaxed">
               {t("storytelling.subtitle", "Bridging philatelic heritage with rural livelihood transformation across West Bengal, Bihar, and Jharkhand.")}
@@ -598,7 +598,7 @@ function Home() {
                   {t("storytelling.solutionTitle", "Our Solution")}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#777777] dark:text-zinc-300 leading-relaxed">
-                  {t("storytelling.solutionDesc", "A unified platform connecting postage stamps -> living destinations -> rural communities. Stamp Safar enables zero-middlemen direct bookings, verified handicraft sales, and 90% direct payouts to local craftspeople and homestays.")}
+                  {t("storytelling.solutionDesc", "A unified platform connecting postage stamps -> living destinations -> rural communities. LokSetu enables zero-middlemen direct bookings, verified handicraft sales, and 90% direct payouts to local craftspeople and homestays.")}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-[#F1D8C5] dark:border-white/10 text-[11px] font-semibold text-[#F47721]">
@@ -1139,7 +1139,7 @@ function Home() {
             How It Works
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-[#252525] dark:text-zinc-100 mb-3">
-            How Stamp Safar <span className="text-[#F47721]">Works</span>
+            How LokSetu <span className="text-[#F47721]">Works</span>
           </h2>
           <p className="text-[#777777] dark:text-zinc-400 max-w-xl mx-auto leading-relaxed">
             From a postage stamp to a living cultural experience — here's how

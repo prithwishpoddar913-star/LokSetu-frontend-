@@ -26,12 +26,12 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       {
-        title: "Contact & Grievance Redressal Desk — Stamp Safar",
+        title: "Contact & Grievance Redressal Desk — LokSetu",
       },
       {
         name: "description",
         content:
-          "Official helpline, email, and grievance officer details for Stamp Safar (Seva First Innovation Challenge - Eastern Zone). Rapid 24-hour response.",
+          "Official helpline, email, and grievance officer details for LokSetu (Seva First Innovation Challenge - Eastern Zone). Rapid 24-hour response.",
       },
     ],
   }),

@@ -1,5 +1,5 @@
 /**
- * State Data for Stamp Safar (SFIC East Region)
+ * State Data for LokSetu (SFIC East Region)
  * West Bengal, Bihar, and Jharkhand
  */
 

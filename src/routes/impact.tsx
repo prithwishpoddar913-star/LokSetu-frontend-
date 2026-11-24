@@ -42,7 +42,7 @@ export const Route = createFileRoute("/impact")({
   head: () => ({
     meta: [
       {
-        title: "Public Impact Dashboard — Stamp Safar | SFIC East",
+        title: "Public Impact Dashboard — LokSetu | SFIC East",
       },
       {
         name: "description",
@@ -570,7 +570,7 @@ function ImpactDashboardPage() {
             </h2>
             <p className="mt-3 text-sm sm:text-base text-[#777777] dark:text-neutral-400 leading-relaxed">
               Unlike commercial booking aggregators and souvenir retail chains that charge 30% to 50% in middleman commissions,
-              <strong> Stamp Safar remits 90% of every sale directly to the artisan or host.</strong> The remaining 10% strictly maintains
+              <strong> LokSetu remits 90% of every sale directly to the artisan or host.</strong> The remaining 10% strictly maintains
               cloud infrastructure, payment gateway processing, and verified craft authentications.
             </p>
           </div>

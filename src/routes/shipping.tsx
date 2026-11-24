@@ -8,12 +8,12 @@ export const Route = createFileRoute("/shipping")({
   head: () => ({
     meta: [
       {
-        title: "Shipping & Philatelic Packaging Policy — Stamp Safar",
+        title: "Shipping & Philatelic Packaging Policy — LokSetu",
       },
       {
         name: "description",
         content:
-          "How Stamp Safar packages rare postage stamps in acid-free archival sleeves and safely ships fragile rural handicrafts via India Post Speed Post.",
+          "How LokSetu packages rare postage stamps in acid-free archival sleeves and safely ships fragile rural handicrafts via India Post Speed Post.",
       },
     ],
   }),
@@ -45,7 +45,7 @@ function ShippingPolicyPage() {
               1. Archival Stamp Packaging Standards
             </h2>
             <p>
-              Postage stamps and commemorative First Day Covers are delicate historical artefacts sensitive to humidity, fingerprint oils, and mechanical friction. Every philatelic order dispatched through Stamp Safar adheres to museum-grade packaging:
+              Postage stamps and commemorative First Day Covers are delicate historical artefacts sensitive to humidity, fingerprint oils, and mechanical friction. Every philatelic order dispatched through LokSetu adheres to museum-grade packaging:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4">
               <div className="p-4 rounded-xl bg-[#FFF7F0] dark:bg-neutral-800 border border-[#F1D8C5] dark:border-neutral-700">

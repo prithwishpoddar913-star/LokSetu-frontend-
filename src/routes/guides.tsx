@@ -26,7 +26,7 @@ import { supabase } from "@/lib/supabase";
 export const Route = createFileRoute("/guides")({
   head: () => ({
     meta: [
-      { title: "Local Tour Guides — Stamp Safar" },
+      { title: "Local Tour Guides — LokSetu" },
       {
         name: "description",
         content:
@@ -253,7 +253,7 @@ function GuidesPage() {
               Are You a Local Guide?
             </h2>
             <p className="text-[#777777] dark:text-zinc-400 mb-6 leading-relaxed">
-              Join Stamp Safar as an independent tour guide. Create your profile,
+              Join LokSetu as an independent tour guide. Create your profile,
               showcase your expertise, and connect with tourists who want authentic
               local experiences across Eastern India.
             </p>

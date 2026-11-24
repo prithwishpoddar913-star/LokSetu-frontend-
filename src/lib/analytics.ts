@@ -1,5 +1,5 @@
 /**
- * Stamp Safar — Privacy-Friendly Analytics
+ * LokSetu — Privacy-Friendly Analytics
  * Feeds aggregated public impact counters without capturing PII or third-party cookies.
  * Honors browser Do-Not-Track headers.
  */

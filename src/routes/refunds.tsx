@@ -8,12 +8,12 @@ export const Route = createFileRoute("/refunds")({
   head: () => ({
     meta: [
       {
-        title: "Cancellation & Refund Policy — Stamp Safar",
+        title: "Cancellation & Refund Policy — LokSetu",
       },
       {
         name: "description",
         content:
-          "Clear cancellation and refund terms for philatelic stamps, handcrafted cultural artefacts, and rural homestay bookings on Stamp Safar.",
+          "Clear cancellation and refund terms for philatelic stamps, handcrafted cultural artefacts, and rural homestay bookings on LokSetu.",
       },
     ],
   }),

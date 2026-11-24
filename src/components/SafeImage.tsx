@@ -59,7 +59,7 @@ export function SafeImage({
           {label || alt}
         </span>
         <span className="text-[10px] text-[#F47721] font-medium tracking-wider uppercase mt-1">
-          Stamp Safar Heritage
+          LokSetu Heritage
         </span>
       </div>
     );

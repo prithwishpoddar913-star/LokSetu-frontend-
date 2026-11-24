@@ -1,5 +1,5 @@
 /**
- * Central Configuration for Stamp Safar
+ * Central Configuration for LokSetu
  * UPI, Razorpay, Shipping, and Business Rules
  */
 
@@ -7,7 +7,7 @@ export const CONFIG = {
   // UPI Merchant Settings
   upi: {
     id: (typeof import.meta.env !== "undefined" && import.meta.env.VITE_MERCHANT_UPI_ID) || "7980797454@slc",
-    merchantName: "Stamp Safar",
+    merchantName: "LokSetu",
     // Local asset reference for the UPI QR
     qrAssetPath: "/upi-qr.png",
   },
@@ -46,6 +46,6 @@ export function buildUpiIntentUrl(params: {
   const pa = encodeURIComponent(params.upiId || CONFIG.upi.id);
   const pn = encodeURIComponent(params.name || CONFIG.upi.merchantName);
   const am = encodeURIComponent(params.amount.toFixed(2));
-  const tn = encodeURIComponent(`Stamp Safar Order ${params.orderNumber || Date.now()}`);
+  const tn = encodeURIComponent(`LokSetu Order ${params.orderNumber || Date.now()}`);
   return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`;
 }

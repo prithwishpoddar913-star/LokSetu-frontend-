@@ -20,7 +20,7 @@ export const Route = createFileRoute("/marketplace")({
   head: () => ({
     meta: [
       {
-        title: "Marketplace — Buy Verified Stamps · Stamp Safar",
+        title: "Marketplace — Buy Verified Stamps · LokSetu",
       },
       {
         name: "description",

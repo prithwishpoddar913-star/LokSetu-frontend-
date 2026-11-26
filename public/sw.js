@@ -1,11 +1,12 @@
-const CACHE_NAME = "stamp-safar-v1";
+const CACHE_NAME = "loksetu-v2";
 const OFFLINE_URL = "/offline.html";
 
 const PRECACHE_ASSETS = [
   "/",
   "/offline.html",
-  "/stamp-safar-logo.jpeg",
+  "/loksetu-logo.jpg",
   "/manifest.webmanifest",
+  "/manifest.json",
 ];
 
 // Install: precache offline fallback and essential icons
@@ -18,7 +19,7 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activate: clean up old caches
+// Activate: clean up old caches (including old stamp-safar-v1)
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -71,6 +72,7 @@ self.addEventListener("fetch", (event) => {
           networkResponse &&
           networkResponse.status === 200 &&
           (url.pathname.endsWith(".jpeg") ||
+            url.pathname.endsWith(".jpg") ||
             url.pathname.endsWith(".png") ||
             url.pathname.endsWith(".webp") ||
             url.pathname.endsWith(".js") ||
@@ -85,7 +87,7 @@ self.addEventListener("fetch", (event) => {
       }).catch(() => {
         // Fallback for missing images
         if (event.request.destination === "image") {
-          return caches.match("/stamp-safar-logo.jpeg");
+          return caches.match("/loksetu-logo.jpg");
         }
       });
     })

@@ -1,7 +1,7 @@
 {
-  "name": "Stamp Safar — Heritage & Philately",
-  "short_name": "Stamp Safar",
-  "description": "From Stamps to Destinations, From Heritage to Livelihood. Seva First Innovation Challenge Eastern Zone entry.",
+  "name": "LokSetu",
+  "short_name": "LokSetu",
+  "description": "LokSetu — Connecting postage stamps to cultural destinations and rural artisan livelihoods across West Bengal, Bihar, and Jharkhand.",
   "start_url": "/",
   "id": "/",
   "display": "standalone",
@@ -12,13 +12,13 @@
   "categories": ["travel", "education", "lifestyle", "shopping"],
   "icons": [
     {
-      "src": "/stamp-safar-logo.jpeg",
+      "src": "/loksetu-logo.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "/stamp-safar-logo.jpeg",
+      "src": "/loksetu-logo.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"

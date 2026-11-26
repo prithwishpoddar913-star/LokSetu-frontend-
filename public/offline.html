@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offline — Stamp Safar</title>
+  <title>Offline — LokSetu</title>
   <style>
     :root {
       --primary: #F47721;
@@ -45,10 +45,11 @@
       height: 64px;
       border-radius: 16px;
       margin-bottom: 16px;
+      object-fit: cover;
     }
     h1 {
       font-size: 24px;
-      margin: 0 0 10px 0;
+      margin: 0 0 12px 0;
       color: var(--text);
     }
     p {
@@ -57,28 +58,32 @@
       line-height: 1.6;
       margin: 0 0 24px 0;
     }
-    button {
+    .btn {
+      display: inline-block;
       background: var(--primary);
-      color: white;
-      border: none;
+      color: #fff;
       padding: 12px 28px;
       border-radius: 9999px;
       font-weight: 600;
       font-size: 14px;
+      text-decoration: none;
       cursor: pointer;
-      transition: opacity 0.2s;
+      border: none;
+      box-shadow: 0 4px 14px rgba(244, 119, 33, 0.35);
+      transition: transform 0.2s, opacity 0.2s;
     }
-    button:hover {
-      opacity: 0.9;
+    .btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <img src="/stamp-safar-logo.jpeg" alt="Stamp Safar" class="logo">
-    <h1>You're Currently Offline</h1>
-    <p>It seems your device is not connected to the internet. Previously cached heritage stories and stamps remain readable, but new live bookings require an internet connection.</p>
-    <button onclick="window.location.reload()">Check Connection & Retry</button>
+    <img src="/loksetu-logo.jpg" alt="LokSetu" class="logo">
+    <h1>You are offline</h1>
+    <p>Please check your internet connection to continue exploring LokSetu's living heritage destinations, homestays, and stamps.</p>
+    <button class="btn" onclick="window.location.reload()">Retry Connection</button>
   </div>
 </body>
 </html>
